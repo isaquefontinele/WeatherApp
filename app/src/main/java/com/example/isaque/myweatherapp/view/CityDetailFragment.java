@@ -1,4 +1,4 @@
-package com.example.isaque.myweatherapp;
+package com.example.isaque.myweatherapp.view;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.isaque.myweatherapp.R;
+import com.example.isaque.myweatherapp.activities.CityDetailActivity;
+import com.example.isaque.myweatherapp.activities.CityListActivity;
 import com.example.isaque.myweatherapp.dummy.DummyContent;
 
 /**

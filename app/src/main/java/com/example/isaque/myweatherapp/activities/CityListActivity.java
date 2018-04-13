@@ -1,4 +1,4 @@
-package com.example.isaque.myweatherapp;
+package com.example.isaque.myweatherapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,24 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.isaque.myweatherapp.view.CityDetailFragment;
+import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.dummy.DummyContent;
 
 import java.util.List;
 
-/**
- * An activity representing a list of Cities. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link CityDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 public class CityListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane;
 
     @Override
@@ -53,10 +43,6 @@ public class CityListActivity extends AppCompatActivity {
         });
 
         if (findViewById(R.id.city_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
@@ -72,7 +58,7 @@ public class CityListActivity extends AppCompatActivity {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final ItemListActivity mParentActivity;
+        private final CityListActivity mParentActivity;
         private final List<DummyContent.DummyItem> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -132,8 +118,8 @@ public class CityListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = (TextView) view.findViewById(R.id.city_name);
+                mContentView = (TextView) view.findViewById(R.id.weather_status);
             }
         }
     }
