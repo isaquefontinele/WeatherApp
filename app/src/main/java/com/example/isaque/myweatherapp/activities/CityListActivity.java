@@ -3,7 +3,8 @@ package com.example.isaque.myweatherapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,15 +15,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
+import com.example.isaque.myweatherapp.model.WeatherData;
+import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
 import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.dummy.DummyContent;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.CITY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
 public class CityListActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
+    private ResultReceiverCallBack mReceiver;
+    private List<WeatherData> mCitiesList;
+    private RecyclerView recyclerView;
+    private SimpleItemRecyclerViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +60,32 @@ public class CityListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.city_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
+        setupRecyclerView();
+        setupServiceWeatherById(2172797);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    private void setupRecyclerView() {
+        mCitiesList = new ArrayList<>();
+        recyclerView = findViewById(R.id.city_list);
+        mAdapter = new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    private void setupServiceWeatherById(int cityId){
+        mReceiver = new ResultReceiverCallBack(new Handler());
+        Intent intent = new Intent(this, RetrievementServiceIntent.class);
+        intent.setAction(ACTION_WEATHER_BY_ID);
+        intent.putExtra(CITY_ID, cityId);
+        intent.putExtra(RESULT_RECEIVER, mReceiver);
+        startService(intent);
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final CityListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private List<DummyContent.DummyItem> mCities;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -83,10 +109,12 @@ public class CityListActivity extends AppCompatActivity {
             }
         };
 
+
+
         SimpleItemRecyclerViewAdapter(CityListActivity parent,
                                       List<DummyContent.DummyItem> items,
                                       boolean twoPane) {
-            mValues = items;
+            mCities = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
         }
@@ -100,16 +128,20 @@ public class CityListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mCities.get(position).id);
+            holder.mContentView.setText(mCities.get(position).content);
 
-            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setTag(mCities.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return mCities.size();
+        }
+
+        public void setmCities(List<DummyContent.DummyItem> mCities) {
+            this.mCities = mCities;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -120,6 +152,42 @@ public class CityListActivity extends AppCompatActivity {
                 super(view);
                 mIdView = (TextView) view.findViewById(R.id.city_name);
                 mContentView = (TextView) view.findViewById(R.id.weather_status);
+            }
+        }
+    }
+
+    public class ResultReceiverCallBack<T> extends ResultReceiver {
+
+        public ResultReceiverCallBack(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            try {
+                if (resultCode == Constants.RESULT_OK) {
+                    if (mReceiver != null ) {
+                        switch (resultData.getString(ACTION_FLAG)) {
+                            case ACTION_WEATHER_BY_ID:
+                                mCitiesList.add(((WeatherData)
+                                        resultData.getSerializable(ACTION_WEATHER_BY_ID)));
+                                break;
+//                            mAdapter.setmCities(mCitiesList);
+//                            mAdapter.notifyDataSetChanged();
+//                        mRecyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMoviesList));
+
+                        }
+                    }
+
+                } else {
+//                    mMoviesList.clear();
+//                    mAdapter.notifyDataSetChanged();
+//                    showError(resultData.getString(ERROR));
+                }
+            } catch (Exception e){
+//                showError(ERROR_UNKNOWN);
+                e.printStackTrace();
             }
         }
     }

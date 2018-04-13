@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.isaque.myweatherapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,6 +30,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.isaque.myweatherapp.activities.CityListActivity" />
         </activity>
+        <service android:name=".data.RetrievementServiceIntent"
+            android:exported="false"/>
     </application>
 
 </manifest>
