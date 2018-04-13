@@ -1,6 +1,7 @@
 package com.example.isaque.myweatherapp.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class WeatherData implements Serializable {
@@ -17,6 +18,7 @@ public class WeatherData implements Serializable {
     private int id;
     private String name;
     private int cod;
+
 
     public class Coordinates{
         private double lon;
@@ -102,8 +104,9 @@ public class WeatherData implements Serializable {
         return clouds;
     }
 
-    public int getDt() {
-        return dt;
+    public Date getDt() {
+        Date date = new Date(dt);
+        return date;
     }
 
     public Sys getSys() {

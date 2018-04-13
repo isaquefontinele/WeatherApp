@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
 import com.example.isaque.myweatherapp.R;
 
@@ -20,7 +21,7 @@ import com.example.isaque.myweatherapp.R;
  * item details are presented side-by-side with a list of items
  * in a {@link CityListActivity}.
  */
-public class CityDetailActivity extends AppCompatActivity {
+public class CityDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,7 @@ public class CityDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(CityDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(CityDetailFragment.ARG_ITEM_ID));
+            arguments.putString(Constants.CITY_ID, getIntent().getStringExtra(Constants.CITY_ID));
             CityDetailFragment fragment = new CityDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

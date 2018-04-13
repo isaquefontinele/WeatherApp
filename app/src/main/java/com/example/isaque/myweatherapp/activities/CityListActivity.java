@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,9 +33,11 @@ import butterknife.BindView;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.CITY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
-public class CityListActivity extends AppCompatActivity {
+public class CityListActivity extends BaseActivity {
 
     @BindView(R.id.city_list) RecyclerView recyclerView;
     private boolean mTwoPane;
@@ -73,6 +77,14 @@ public class CityListActivity extends AppCompatActivity {
         intent.putExtra(CITY_ID, cityId);
         intent.putExtra(RESULT_RECEIVER, mReceiver);
         startService(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.my_options_menu, menu);
+
+        return true;
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -174,17 +186,13 @@ public class CityListActivity extends AppCompatActivity {
                                 mAdapter.setmCities(mCitiesList);
                                 mAdapter.notifyDataSetChanged();
                                 break;
-
                         }
                     }
-
                 } else {
-//                    mMoviesList.clear();
-//                    mAdapter.notifyDataSetChanged();
-//                    showError(resultData.getString(ERROR));
+                    showError(resultData.getString(ERROR));
                 }
             } catch (Exception e){
-//                showError(ERROR_UNKNOWN);
+                showError(ERROR_UNKNOWN);
                 e.printStackTrace();
             }
         }

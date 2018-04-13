@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">MyWeatherApp</string>
     <string name="title_city_detail">City Detail</string>
+
+    <!-->Loading Dialog<-->
+    <string name="loading">Carregando</string>
+    <string name="wait_while_loading">Aguarde enquanto os dados são carregados…</string>
+
+    <!-->Error messages<-->
+    <string name="network_error">Não há conexão à internet. Por favor tente novamente mais tarde.</string>
+    <string name="error_getting_data">Erro carregando os dados do servidor. Por favor tente novamente mais tarde.</string>
+    <string name="unknown_error">Um erro desconhecido ocorreu.</string>
 </resources>

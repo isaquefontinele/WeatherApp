@@ -3,6 +3,7 @@
     package="com.example.isaque.myweatherapp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,15 @@
         <activity
             android:name=".activities.CityDetailActivity"
             android:label="@string/title_city_detail"
+            android:parentActivityName=".activities.CityListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.isaque.myweatherapp.activities.CityListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.BaseActivity"
+            android:label="@string/app_name"
             android:parentActivityName=".activities.CityListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

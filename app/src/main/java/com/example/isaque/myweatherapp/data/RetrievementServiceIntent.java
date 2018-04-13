@@ -13,8 +13,10 @@ import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
+import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_FAIL;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_OK;
+import static com.example.isaque.myweatherapp.utils.Utils.isConnected;
 
 public class RetrievementServiceIntent extends IntentService {
 
@@ -35,6 +37,12 @@ public class RetrievementServiceIntent extends IntentService {
         final ApiCall api = new ApiCall();
         final Bundle bundle = new Bundle();
         WeatherData weatherData;
+
+        if (!isConnected(getApplicationContext())) {
+            bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR);
+            resultReceiver.send(RESULT_FAIL, bundle);
+            return;
+        }
 
         try{
             switch (action){

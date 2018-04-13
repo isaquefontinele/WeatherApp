@@ -7,6 +7,7 @@ public class Constants {
     public static final String CITY_ID = "cityId";
 
     public static final String ERROR = "error";
+    public static final String NETWORK_CONNECTION_ERROR = "networkError";
     public static final String ERROR_GETTING_DATA = "getDataError";
     public static final String ERROR_UNKNOWN = "unknownError";
 
