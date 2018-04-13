@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 
+import com.example.isaque.myweatherapp.model.ForecastData;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_5_DAY_FORECAST;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
@@ -37,6 +39,7 @@ public class RetrievementServiceIntent extends IntentService {
         final ApiCall api = new ApiCall();
         final Bundle bundle = new Bundle();
         WeatherData weatherData;
+        ForecastData forecastData;
 
         if (!isConnected(getApplicationContext())) {
             bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR);
@@ -52,6 +55,11 @@ public class RetrievementServiceIntent extends IntentService {
                     bundle.putString(ACTION_FLAG, ACTION_WEATHER_BY_ID);
                     resultReceiver.send(RESULT_OK, bundle);
                     break;
+                case ACTION_5_DAY_FORECAST:
+                    forecastData = api.getForecastById(cityId);
+                    bundle.putSerializable(ACTION_5_DAY_FORECAST, forecastData);
+                    bundle.putString(ACTION_FLAG, ACTION_5_DAY_FORECAST);
+                    resultReceiver.send(RESULT_OK, bundle);
                 default:
                     bundle.putString(ERROR, ERROR_GETTING_DATA);
                     resultReceiver.send(RESULT_FAIL, bundle);

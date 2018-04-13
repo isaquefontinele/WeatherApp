@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,13 +16,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.utils.Utils;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
-import com.example.isaque.myweatherapp.R;
-import com.example.isaque.myweatherapp.dummy.DummyContent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,7 +61,6 @@ public class CityListActivity extends BaseActivity {
 
         setupRecyclerView();
         loadCities();
-        setupServiceWeatherById(2172797);
     }
 
     private void loadCities() {

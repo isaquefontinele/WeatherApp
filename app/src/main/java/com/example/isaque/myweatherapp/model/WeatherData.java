@@ -50,7 +50,7 @@ public class WeatherData implements Serializable {
 
     public class Main{
         private double temp;
-        private int pressure;
+        private double pressure;
         private int humidity;
         private double temp_min;
         private double temp_max;
@@ -66,7 +66,7 @@ public class WeatherData implements Serializable {
 
     public class Wind{
         private double speed;
-        private int deg;
+        private double deg;
     }
 
     public class Clouds{

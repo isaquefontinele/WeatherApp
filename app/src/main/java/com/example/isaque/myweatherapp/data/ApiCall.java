@@ -1,5 +1,6 @@
 package com.example.isaque.myweatherapp.data;
 
+import com.example.isaque.myweatherapp.model.ForecastData;
 import com.example.isaque.myweatherapp.model.WeatherData;
 
 import java.io.IOException;
@@ -21,5 +22,9 @@ public class ApiCall {
 
     public WeatherData getWeatherById(int idCity) throws IOException {
         return serviceApi.getWeatherById(String.valueOf(idCity), API_KEY).execute().body();
+    }
+
+    public ForecastData getForecastById(int idCity) throws IOException {
+        return serviceApi.get5dayForecastById(String.valueOf(idCity), API_KEY).execute().body();
     }
 }

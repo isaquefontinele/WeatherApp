@@ -14,16 +14,19 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
+import com.example.isaque.myweatherapp.model.ForecastData;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
 import com.example.isaque.myweatherapp.R;
 
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_5_DAY_FORECAST;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.CITY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
+import static com.example.isaque.myweatherapp.utils.Constants.FORECAST_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
 /**
@@ -35,11 +38,15 @@ import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 public class CityDetailActivity extends BaseActivity {
 
     private ResultReceiverCallBack mReceiver;
+    private ForecastData forecastData;
+    private Bundle instanceState;
+
     private int cityID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.instanceState = savedInstanceState;
         setContentView(R.layout.activity_city_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -47,10 +54,6 @@ public class CityDetailActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        if (savedInstanceState == null) {
-            setupFragment();
         }
 
         setupReceiver();
@@ -63,16 +66,18 @@ public class CityDetailActivity extends BaseActivity {
         intent.putExtra(CITY_ID, getIntent().getIntExtra(Constants.CITY_ID, -1));
         intent.putExtra(RESULT_RECEIVER, mReceiver);
         startService(intent);
-        showLoading();
     }
 
     private void setupFragment(){
-        Bundle arguments = new Bundle();
-        CityDetailFragment fragment = new CityDetailFragment();
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.city_detail_container, fragment)
-                .commit();
+        if (instanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putSerializable(FORECAST_DATA, forecastData);
+            CityDetailFragment fragment = new CityDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.city_detail_container, fragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -93,19 +98,18 @@ public class CityDetailActivity extends BaseActivity {
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            hideLoading();
             super.onReceiveResult(resultCode, resultData);
             try {
                 if (resultCode == Constants.RESULT_OK) {
                     if (mReceiver != null ) {
                         switch (resultData.getString(ACTION_FLAG)) {
-                            case ACTION_WEATHER_BY_ID:
-//                                mCitiesList.add(((WeatherData)
-//                                        resultData.getSerializable(ACTION_WEATHER_BY_ID)));
+                            case ACTION_5_DAY_FORECAST:
+                                forecastData = (ForecastData) resultData.getSerializable(ACTION_5_DAY_FORECAST);
 //                                updateAdapter();
                                 break;
                         }
                     }
+                    setupFragment();
                 } else {
                     showError(resultData.getString(ERROR));
                 }

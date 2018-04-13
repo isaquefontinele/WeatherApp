@@ -6,6 +6,7 @@ public class Constants {
     public static final String ACTION_WEATHER_BY_ID = "weatherById";
     public static final String ACTION_5_DAY_FORECAST = "5dayForecast";
     public static final String CITY_ID = "cityId";
+    public static final String FORECAST_DATA = "forecastData";
 
     public static final String ERROR = "error";
     public static final String NETWORK_CONNECTION_ERROR = "networkError";
