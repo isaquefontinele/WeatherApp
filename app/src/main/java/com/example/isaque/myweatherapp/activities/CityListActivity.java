@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import com.example.isaque.myweatherapp.dummy.DummyContent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +62,15 @@ public class CityListActivity extends BaseActivity {
 
 
         setupRecyclerView();
+        loadCities();
         setupServiceWeatherById(2172797);
+    }
+
+    private void loadCities() {
+        int[] registeredCities = {707860, 519188, 1283240, 614371, 2922336};
+        for (int i :registeredCities){
+            setupServiceWeatherById(i);
+        }
     }
 
     private void setupRecyclerView() {
@@ -83,8 +93,32 @@ public class CityListActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.my_options_menu, menu);
-
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.sortByName:
+                Collections.sort(mCitiesList, compareByName);
+                updateAdapter();
+                return true;
+            case R.id.sortByMinTemp:
+                Collections.sort(mCitiesList, compareByMinTemp);
+                updateAdapter();
+                return true;
+            case R.id.sortByMaxTemp:
+                Collections.sort(mCitiesList, compareByMaxTemp);
+                updateAdapter();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateAdapter(){
+        mAdapter.setmCities(mCitiesList);
+        mAdapter.notifyDataSetChanged();
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -93,32 +127,8 @@ public class CityListActivity extends BaseActivity {
         private final CityListActivity mParentActivity;
         private List<WeatherData> mCities;
         private final boolean mTwoPane;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(CityDetailFragment.ARG_ITEM_ID, item.id);
-                    CityDetailFragment fragment = new CityDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.city_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, CityDetailActivity.class);
-                    intent.putExtra(CityDetailFragment.ARG_ITEM_ID, item.id);
 
-                    context.startActivity(intent);
-                }
-            }
-        };
-
-
-
-        SimpleItemRecyclerViewAdapter(CityListActivity parent,
-                                      List<WeatherData> items,
+        SimpleItemRecyclerViewAdapter(CityListActivity parent, List<WeatherData> items,
                                       boolean twoPane) {
             mCities = items;
             mParentActivity = parent;
@@ -133,7 +143,7 @@ public class CityListActivity extends BaseActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.cityName.setText(mCities.get(position).getName());
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
             Picasso.with(mParentActivity).
@@ -141,7 +151,25 @@ public class CityListActivity extends BaseActivity {
                     into(holder.iconWeather);
 
             holder.itemView.setTag(mCities.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mTwoPane) {
+                        Bundle arguments = new Bundle();
+                        arguments.putInt(CITY_ID, mCities.get(position).getId());
+                        CityDetailFragment fragment = new CityDetailFragment();
+                        fragment.setArguments(arguments);
+                        mParentActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.city_detail_container, fragment)
+                                .commit();
+                    } else {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, CityDetailActivity.class);
+                        intent.putExtra(CITY_ID, mCities.get(position).getId());
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
 
         @Override
@@ -183,8 +211,8 @@ public class CityListActivity extends BaseActivity {
                             case ACTION_WEATHER_BY_ID:
                                 mCitiesList.add(((WeatherData)
                                         resultData.getSerializable(ACTION_WEATHER_BY_ID)));
-                                mAdapter.setmCities(mCitiesList);
-                                mAdapter.notifyDataSetChanged();
+                                Collections.sort(mCitiesList, compareByName);
+                                updateAdapter();
                                 break;
                         }
                     }

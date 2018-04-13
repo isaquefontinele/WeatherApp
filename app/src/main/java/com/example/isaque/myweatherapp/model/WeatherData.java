@@ -54,6 +54,14 @@ public class WeatherData implements Serializable {
         private int humidity;
         private double temp_min;
         private double temp_max;
+
+        public double getTemp_min() {
+            return temp_min;
+        }
+
+        public double getTemp_max() {
+            return temp_max;
+        }
     }
 
     public class Wind{

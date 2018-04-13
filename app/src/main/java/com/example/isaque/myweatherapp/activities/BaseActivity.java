@@ -3,11 +3,15 @@ package com.example.isaque.myweatherapp.activities;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.isaque.myweatherapp.R;
+import com.example.isaque.myweatherapp.model.WeatherData;
+
+import java.util.Comparator;
 
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
@@ -50,4 +54,25 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+
+    public Comparator<WeatherData> compareByName = new Comparator<WeatherData>() {
+        @Override
+        public int compare(WeatherData weatherData, WeatherData t1) {
+            return weatherData.getName().compareTo(t1.getName());
+        }
+    };
+    public Comparator<WeatherData> compareByMinTemp = new Comparator<WeatherData>() {
+        @Override
+        public int compare(WeatherData weatherData, WeatherData t1) {
+            return Double.compare(weatherData.getMain().getTemp_min(), t1.getMain().getTemp_min());
+        }
+    };
+    public Comparator<WeatherData> compareByMaxTemp = new Comparator<WeatherData>() {
+        @Override
+        public int compare(WeatherData weatherData, WeatherData t1) {
+            return Double.compare(weatherData.getMain().getTemp_max(), t1.getMain().getTemp_max());
+        }
+    };
 }
