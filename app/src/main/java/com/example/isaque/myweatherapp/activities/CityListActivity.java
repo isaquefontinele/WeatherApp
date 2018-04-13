@@ -8,22 +8,25 @@ import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
+import com.example.isaque.myweatherapp.utils.Utils;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
 import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.dummy.DummyContent;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
@@ -32,10 +35,10 @@ import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
 public class CityListActivity extends AppCompatActivity {
 
+    @BindView(R.id.city_list) RecyclerView recyclerView;
     private boolean mTwoPane;
     private ResultReceiverCallBack mReceiver;
     private List<WeatherData> mCitiesList;
-    private RecyclerView recyclerView;
     private SimpleItemRecyclerViewAdapter mAdapter;
 
     @Override
@@ -43,18 +46,9 @@ public class CityListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         if (findViewById(R.id.city_detail_container) != null) {
             mTwoPane = true;
@@ -68,7 +62,7 @@ public class CityListActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         mCitiesList = new ArrayList<>();
         recyclerView = findViewById(R.id.city_list);
-        mAdapter = new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane);
+        mAdapter = new SimpleItemRecyclerViewAdapter(this, mCitiesList, mTwoPane);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -85,7 +79,7 @@ public class CityListActivity extends AppCompatActivity {
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final CityListActivity mParentActivity;
-        private List<DummyContent.DummyItem> mCities;
+        private List<WeatherData> mCities;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -112,7 +106,7 @@ public class CityListActivity extends AppCompatActivity {
 
 
         SimpleItemRecyclerViewAdapter(CityListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<WeatherData> items,
                                       boolean twoPane) {
             mCities = items;
             mParentActivity = parent;
@@ -128,8 +122,11 @@ public class CityListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mCities.get(position).id);
-            holder.mContentView.setText(mCities.get(position).content);
+            holder.cityName.setText(mCities.get(position).getName());
+            holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
+            Picasso.with(mParentActivity).
+                    load(Utils.getIconLink(mCities.get(position).getWeather().get(0).getIcon())).
+                    into(holder.iconWeather);
 
             holder.itemView.setTag(mCities.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -140,18 +137,20 @@ public class CityListActivity extends AppCompatActivity {
             return mCities.size();
         }
 
-        public void setmCities(List<DummyContent.DummyItem> mCities) {
+        public void setmCities(List<WeatherData> mCities) {
             this.mCities = mCities;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView cityName;
+            final TextView weatherStatus;
+            final ImageView iconWeather;
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.city_name);
-                mContentView = (TextView) view.findViewById(R.id.weather_status);
+                cityName = view.findViewById(R.id.city_name);
+                weatherStatus = view.findViewById(R.id.weather_status);
+                iconWeather = view.findViewById(R.id.icon_weather);
             }
         }
     }
@@ -172,10 +171,9 @@ public class CityListActivity extends AppCompatActivity {
                             case ACTION_WEATHER_BY_ID:
                                 mCitiesList.add(((WeatherData)
                                         resultData.getSerializable(ACTION_WEATHER_BY_ID)));
+                                mAdapter.setmCities(mCitiesList);
+                                mAdapter.notifyDataSetChanged();
                                 break;
-//                            mAdapter.setmCities(mCitiesList);
-//                            mAdapter.notifyDataSetChanged();
-//                        mRecyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mMoviesList));
 
                         }
                     }

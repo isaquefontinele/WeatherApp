@@ -18,20 +18,35 @@ public class WeatherData implements Serializable {
     private String name;
     private int cod;
 
-
-    private class Coordinates{
+    public class Coordinates{
         private double lon;
         private double lat;
     }
 
-    private class Weather{
+    public class Weather{
         private int id;
         private String main;
         private String description;
         private String icon;
+
+        public int getId() {
+            return id;
+        }
+
+        public String getMain() {
+            return main;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
     }
 
-    private class Main{
+    public class Main{
         private double temp;
         private int pressure;
         private int humidity;
@@ -39,21 +54,71 @@ public class WeatherData implements Serializable {
         private double temp_max;
     }
 
-    private class Wind{
+    public class Wind{
         private double speed;
         private int deg;
     }
 
-    private class Clouds{
+    public class Clouds{
         private int all;
     }
 
-    private class Sys{
+    public class Sys{
         private int type;
         private int id;
         private double message;
         private String country;
         private String sunrise;
         private String sunset;
+    }
+
+
+    // Gets and Sets
+    public Coordinates getCoord() {
+        return coord;
+    }
+
+    public List<Weather> getWeather() {
+        return weather;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public Clouds getClouds() {
+        return clouds;
+    }
+
+    public int getDt() {
+        return dt;
+    }
+
+    public Sys getSys() {
+        return sys;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCod() {
+        return cod;
     }
 }
