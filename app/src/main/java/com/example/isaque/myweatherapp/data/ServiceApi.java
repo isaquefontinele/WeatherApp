@@ -18,9 +18,11 @@ public interface ServiceApi {
 
     @GET(WEATHER_URL)
     Call<WeatherData> getWeatherById(@Query("id") String id,
-                                     @Query("appid") String appid);
+                                     @Query("appid") String appid,
+                                     @Query("units") String units);
 
     @GET(FORECAST_URL)
     Call<ForecastData> get5dayForecastById(@Query("id") String id,
-                                       @Query("appid") String appid);
+                                           @Query("appid") String appid,
+                                           @Query("units") String units);
 }

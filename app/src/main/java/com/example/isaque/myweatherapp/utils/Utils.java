@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.isaque.myweatherapp.model.WeatherData;
+
 import static com.example.isaque.myweatherapp.data.ServiceApi.BASE_URL_IMAGES;
 
 public class Utils {
@@ -18,5 +20,10 @@ public class Utils {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static String getFormattedTemp(WeatherData weatherData) {
+        return String.valueOf(weatherData.getMain().getTemp_min()) + "º / " +
+                String.valueOf(weatherData.getMain().getTemp_max()) + "º";
     }
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
+import com.example.isaque.myweatherapp.data.SharedPrefs;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.utils.Utils;
@@ -59,8 +60,14 @@ public class CityListActivity extends BaseActivity {
         }
 
 
+        resetPrefs();
         setupRecyclerView();
         loadCities();
+    }
+
+    private void resetPrefs() {
+        SharedPrefs prefs = new SharedPrefs(this);
+        prefs.saveDefaultMetric();
     }
 
     private void loadCities() {
@@ -143,6 +150,7 @@ public class CityListActivity extends BaseActivity {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.cityName.setText(mCities.get(position).getName());
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
+            holder.temperature.setText(Utils.getFormattedTemp(mCities.get(position)));
             Picasso.with(mParentActivity).
                     load(Utils.getIconLink(mCities.get(position).getWeather().get(0).getIcon())).
                     into(holder.iconWeather);
@@ -181,12 +189,14 @@ public class CityListActivity extends BaseActivity {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView cityName;
             final TextView weatherStatus;
+            final TextView temperature;
             final ImageView iconWeather;
 
             ViewHolder(View view) {
                 super(view);
                 cityName = view.findViewById(R.id.city_name);
                 weatherStatus = view.findViewById(R.id.weather_status);
+                temperature = view.findViewById(R.id.temperature);
                 iconWeather = view.findViewById(R.id.icon_weather);
             }
         }

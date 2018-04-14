@@ -40,6 +40,8 @@ public class RetrievementServiceIntent extends IntentService {
         final Bundle bundle = new Bundle();
         WeatherData weatherData;
         ForecastData forecastData;
+        SharedPrefs prefs = new SharedPrefs(this);
+        String defaultUnit = prefs.getDefaultUnit();
 
         if (!isConnected(getApplicationContext())) {
             bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR);
@@ -50,13 +52,13 @@ public class RetrievementServiceIntent extends IntentService {
         try{
             switch (action){
                 case ACTION_WEATHER_BY_ID:
-                    weatherData = api.getWeatherById(cityId);
+                    weatherData = api.getWeatherById(cityId, defaultUnit);
                     bundle.putSerializable(ACTION_WEATHER_BY_ID, weatherData);
                     bundle.putString(ACTION_FLAG, ACTION_WEATHER_BY_ID);
                     resultReceiver.send(RESULT_OK, bundle);
                     break;
                 case ACTION_5_DAY_FORECAST:
-                    forecastData = api.getForecastById(cityId);
+                    forecastData = api.getForecastById(cityId, defaultUnit);
                     bundle.putSerializable(ACTION_5_DAY_FORECAST, forecastData);
                     bundle.putString(ACTION_FLAG, ACTION_5_DAY_FORECAST);
                     resultReceiver.send(RESULT_OK, bundle);
