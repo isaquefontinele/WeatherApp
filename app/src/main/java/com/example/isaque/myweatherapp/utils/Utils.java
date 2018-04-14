@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.isaque.myweatherapp.activities.CityListActivity;
+import com.example.isaque.myweatherapp.data.SharedPrefs;
 import com.example.isaque.myweatherapp.model.WeatherData;
 
 import static com.example.isaque.myweatherapp.data.ServiceApi.BASE_URL_IMAGES;
@@ -22,8 +24,16 @@ public class Utils {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    public static String getFormattedTemp(WeatherData weatherData) {
-        return String.valueOf(weatherData.getMain().getTemp_min()) + "º / " +
-                String.valueOf(weatherData.getMain().getTemp_max()) + "º";
+    public static String getFormattedTemp(Context context, WeatherData weatherData) {
+        final String minTemp = String.valueOf(weatherData.getMain().getTemp_min());
+        final String maxTemp = String.valueOf(weatherData.getMain().getTemp_max());
+        SharedPrefs prefs = new SharedPrefs(context);
+
+        if (prefs.getDefaultUnit().equals(Constants.METRIC)) {
+            return minTemp + "ºC / " + maxTemp + "ºC";
+        } else {
+            return minTemp + "ºF / " + maxTemp + "ºF";
+        }
+
     }
 }

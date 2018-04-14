@@ -9,9 +9,11 @@ public class Constants {
     public static final String FORECAST_DATA = "forecastData";
 
     public static final String SHARE_PREFS = "PREFS";
+    public static final String PREFS_CITIES_LIST = "prefCitiesList";
 
     public static final String ERROR = "error";
     public static final String NETWORK_CONNECTION_ERROR = "networkError";
+    public static final String NETWORK_CONNECTION_ERROR_LOAD_DATA = "networkErrorLoadData";
     public static final String ERROR_GETTING_DATA = "getDataError";
     public static final String ERROR_UNKNOWN = "unknownError";
 

@@ -16,6 +16,7 @@ import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR;
+import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR_LOAD_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_FAIL;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_OK;
 import static com.example.isaque.myweatherapp.utils.Utils.isConnected;
@@ -44,7 +45,11 @@ public class RetrievementServiceIntent extends IntentService {
         String defaultUnit = prefs.getDefaultUnit();
 
         if (!isConnected(getApplicationContext())) {
-            bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR);
+            if (prefs.getCitiesList().getWeatherDataList().size() == 0) {
+                bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR);
+            } else {
+                bundle.putSerializable(ERROR, NETWORK_CONNECTION_ERROR_LOAD_DATA);
+            }
             resultReceiver.send(RESULT_FAIL, bundle);
             return;
         }

@@ -15,6 +15,7 @@ import java.util.Comparator;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
 import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR;
+import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR_LOAD_DATA;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -41,6 +42,10 @@ public class BaseActivity extends AppCompatActivity {
         switch (error){
             case NETWORK_CONNECTION_ERROR:
                 Toast.makeText(this, getString(R.string.network_error),
+                        Toast.LENGTH_LONG).show();
+                break;
+            case NETWORK_CONNECTION_ERROR_LOAD_DATA:
+                Toast.makeText(this, getString(R.string.network_loaded_data),
                         Toast.LENGTH_LONG).show();
                 break;
             case ERROR_GETTING_DATA:

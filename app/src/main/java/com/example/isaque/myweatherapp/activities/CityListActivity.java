@@ -2,6 +2,7 @@ package com.example.isaque.myweatherapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -20,6 +21,7 @@ import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
 import com.example.isaque.myweatherapp.data.SharedPrefs;
 import com.example.isaque.myweatherapp.model.WeatherData;
+import com.example.isaque.myweatherapp.model.WeatherDataList;
 import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.utils.Utils;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
@@ -45,6 +47,7 @@ public class CityListActivity extends BaseActivity {
     private ResultReceiverCallBack mReceiver;
     private List<WeatherData> mCitiesList;
     private SimpleItemRecyclerViewAdapter mAdapter;
+    private SharedPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,9 @@ public class CityListActivity extends BaseActivity {
 
     private void resetPrefs() {
         SharedPrefs prefs = new SharedPrefs(this);
-        prefs.saveDefaultMetric();
+        if (!prefs.getPreferences().contains(Constants.DEFAULT_UNIT)) {
+            prefs.saveDefaultMetric();
+        }
     }
 
     private void loadCities() {
@@ -78,7 +83,8 @@ public class CityListActivity extends BaseActivity {
     }
 
     private void setupRecyclerView() {
-        mCitiesList = new ArrayList<>();
+        prefs = new SharedPrefs(this);
+        mCitiesList = prefs.getCitiesList().getWeatherDataList();
         recyclerView = findViewById(R.id.city_list);
         mAdapter = new SimpleItemRecyclerViewAdapter(this, mCitiesList, mTwoPane);
         recyclerView.setAdapter(mAdapter);
@@ -102,20 +108,28 @@ public class CityListActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        prefs = new SharedPrefs(this);
+
         int id = item.getItemId();
         switch (id) {
             case R.id.sortByName:
                 Collections.sort(mCitiesList, compareByName);
                 updateAdapter();
+                prefs.saveCitiesList(new WeatherDataList(mCitiesList));
                 return true;
             case R.id.sortByMinTemp:
                 Collections.sort(mCitiesList, compareByMinTemp);
                 updateAdapter();
+                prefs.saveCitiesList(new WeatherDataList(mCitiesList));
                 return true;
             case R.id.sortByMaxTemp:
                 Collections.sort(mCitiesList, compareByMaxTemp);
                 updateAdapter();
+                prefs.saveCitiesList(new WeatherDataList(mCitiesList));
                 return true;
+            case R.id.settings:
+                Intent intent = new Intent(this, Settings.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -150,7 +164,7 @@ public class CityListActivity extends BaseActivity {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.cityName.setText(mCities.get(position).getName());
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
-            holder.temperature.setText(Utils.getFormattedTemp(mCities.get(position)));
+            holder.temperature.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
             Picasso.with(mParentActivity).
                     load(Utils.getIconLink(mCities.get(position).getWeather().get(0).getIcon())).
                     into(holder.iconWeather);

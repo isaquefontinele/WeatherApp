@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.Settings"
+    tools:showIn="@layout/activity_settings">
+
+    <RadioButton
+        android:id="@+id/radio_celsius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/radio_celsius"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="41dp" />
+
+    <RadioButton
+        android:id="@+id/radio_fahr"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_below="@+id/radio_celsius"
+        android:layout_marginLeft="16dp"
+        android:text="@string/radio_fahr"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="73dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="16dp"
+        android:text="@string/title_temp_unit"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="87dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:text="Default Temperature Unit:" />
+</RelativeLayout>
