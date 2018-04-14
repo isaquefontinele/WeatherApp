@@ -1,6 +1,7 @@
 package com.example.isaque.myweatherapp.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -113,8 +114,10 @@ public class WeatherData implements Serializable {
     }
 
     public Date getDt() {
-        Date date = new Date(dt);
+        Timestamp timestamp = new Timestamp(dt);
+        Date date = new Date(timestamp.getDate());
         return date;
+
     }
 
     public Sys getSys() {

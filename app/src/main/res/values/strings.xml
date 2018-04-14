@@ -8,7 +8,7 @@
 
     <!-->Error messages<-->
     <string name="network_error">Não há conexão à internet. Por favor tente novamente mais tarde.</string>
-    <string name="network_loaded_data">Não há conexão à internet. Os dados podem estar desatualizados.</string>
+    <string name="network_loaded_data">Não há conexão à internet. Os dados exibidos podem estar desatualizados.</string>
     <string name="error_getting_data">Erro carregando os dados do servidor. Por favor tente novamente mais tarde.</string>
     <string name="unknown_error">Um erro desconhecido ocorreu.</string>
     <string name="title_activity_settings">Settings</string>

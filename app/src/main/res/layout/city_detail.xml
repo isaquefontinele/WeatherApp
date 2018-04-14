@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/city_detail"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".view.CityDetailFragment" />
+    tools:context=".view.CityDetailFragment">
+
+
+    <TextView
+        android:id="@+id/city_detail"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Forecast for the next days:"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_dark_background"
+        android:textIsSelectable="true"
+        android:textStyle="bold" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_forecast"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_below="@+id/city_detail"
+        android:layout_margin="16dp"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:gravity="center"
+        tools:listitem="@layout/city_list_content" />
+
+</RelativeLayout>

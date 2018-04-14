@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,9 +77,12 @@ public class CityListActivity extends BaseActivity {
     }
 
     private void loadCities() {
-        int[] registeredCities = {707860, 519188, 1283240, 614371, 2922336};
-        for (int i :registeredCities){
-            setupServiceWeatherById(i);
+        if (Utils.isConnected(this)) {
+            mCitiesList.clear();
+            int[] registeredCities = {707860, 519188, 1283240, 614371, 2922336};
+            for (int i : registeredCities) {
+                setupServiceWeatherById(i);
+            }
         }
     }
 
@@ -162,6 +166,7 @@ public class CityListActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
+            holder.date.setText(mCities.get(position).getDt().toString());
             holder.cityName.setText(mCities.get(position).getName());
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
             holder.temperature.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
@@ -204,11 +209,13 @@ public class CityListActivity extends BaseActivity {
             final TextView cityName;
             final TextView weatherStatus;
             final TextView temperature;
+            final TextView date;
             final ImageView iconWeather;
 
             ViewHolder(View view) {
                 super(view);
                 cityName = view.findViewById(R.id.city_name);
+                date = view.findViewById(R.id.date);
                 weatherStatus = view.findViewById(R.id.weather_status);
                 temperature = view.findViewById(R.id.temperature);
                 iconWeather = view.findViewById(R.id.icon_weather);

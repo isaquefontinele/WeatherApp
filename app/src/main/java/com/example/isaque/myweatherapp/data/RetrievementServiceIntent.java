@@ -67,6 +67,7 @@ public class RetrievementServiceIntent extends IntentService {
                     bundle.putSerializable(ACTION_5_DAY_FORECAST, forecastData);
                     bundle.putString(ACTION_FLAG, ACTION_5_DAY_FORECAST);
                     resultReceiver.send(RESULT_OK, bundle);
+                    break;
                 default:
                     bundle.putString(ERROR, ERROR_GETTING_DATA);
                     resultReceiver.send(RESULT_FAIL, bundle);
