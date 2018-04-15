@@ -36,6 +36,7 @@ import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_
 import static com.example.isaque.myweatherapp.utils.Constants.CITY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
+import static com.example.isaque.myweatherapp.utils.Constants.LAST_CITY;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
 public class CityListActivity extends BaseActivity {
@@ -60,7 +61,6 @@ public class CityListActivity extends BaseActivity {
             mTwoPane = true;
         }
 
-
         resetPrefs();
         setupRecyclerView();
         loadCities();
@@ -78,9 +78,14 @@ public class CityListActivity extends BaseActivity {
             mCitiesList.clear();
             int[] registeredCities = {707860, 519188, 1283240, 614371, 2922336};
             for (int i : registeredCities) {
-                setupServiceWeatherById(i);
+                if (i == registeredCities[registeredCities.length - 1]) {
+                    setupServiceWeatherById(i, true);
+                } else {
+                    setupServiceWeatherById(i, false);
+                }
             }
         }
+        showLoading();
     }
 
     private void setupRecyclerView() {
@@ -91,11 +96,12 @@ public class CityListActivity extends BaseActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void setupServiceWeatherById(int cityId){
+    private void setupServiceWeatherById(int cityId, boolean lastCity) {
         mReceiver = new ResultReceiverCallBack(new Handler());
         Intent intent = new Intent(this, RetrievementServiceIntent.class);
         intent.setAction(ACTION_WEATHER_BY_ID);
         intent.putExtra(CITY_ID, cityId);
+        intent.putExtra(LAST_CITY, lastCity);
         intent.putExtra(RESULT_RECEIVER, mReceiver);
         startService(intent);
     }
@@ -129,7 +135,7 @@ public class CityListActivity extends BaseActivity {
                 prefs.saveCitiesList(new WeatherDataList(mCitiesList));
                 return true;
             case R.id.settings:
-                Intent intent = new Intent(this, Settings.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -234,7 +240,7 @@ public class CityListActivity extends BaseActivity {
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
+            checkLast(resultData);
             try {
                 if (resultCode == Constants.RESULT_OK) {
                     if (mReceiver != null ) {
@@ -253,6 +259,12 @@ public class CityListActivity extends BaseActivity {
             } catch (Exception e){
                 showError(ERROR_UNKNOWN);
                 e.printStackTrace();
+            }
+        }
+
+        private void checkLast(Bundle resultData) {
+            if (resultData.getBoolean(LAST_CITY)) {
+                hideLoading();
             }
         }
     }

@@ -20,7 +20,7 @@ import com.example.isaque.myweatherapp.utils.Constants;
 
 import butterknife.BindView;
 
-public class Settings extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     RadioButton radioCelsius;
     RadioButton radioFahr;

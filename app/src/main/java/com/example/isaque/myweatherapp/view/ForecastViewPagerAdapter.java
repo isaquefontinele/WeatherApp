@@ -30,7 +30,7 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
 
     @Override
     public float getPageWidth(int position) {
-        return 0.6f;
+        return 0.55f;
     }
 
 
@@ -39,14 +39,14 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.forecast_content, null);
 
         try {
-            final TextView cityName = view.findViewById(R.id.city_name);
+//            final TextView cityName = view.findViewById(R.id.city_name);
             final TextView date = view.findViewById(R.id.date);
             final TextView weatherStatus = view.findViewById(R.id.weather_status);
             final TextView temperature = view.findViewById(R.id.temp_min_max);
             final ImageView iconWeather = view.findViewById(R.id.icon_weather);
 
             date.setText(Utils.getDayOfWeek(forecastData.getWeatherDataList().get(position).getDate()));
-            cityName.setText(forecastData.getCity().getName());
+//            cityName.setText(forecastData.getCity().getName());
             weatherStatus.setText(weatherDataList.get(position).getWeather().get(0).getMain());
             temperature.setText(Utils.getFormattedTemp(context, weatherDataList.get(position)));
             Picasso.with(context).

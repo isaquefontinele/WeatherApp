@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.activities.CityDetailActivity;
@@ -33,10 +34,6 @@ public class CityDetailFragment extends Fragment {
     ViewPager viewPager;
     private ForecastData forecastData;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public CityDetailFragment() {
     }
 
@@ -47,6 +44,8 @@ public class CityDetailFragment extends Fragment {
         forecastData = (ForecastData) getArguments().getSerializable(Constants.FORECAST_DATA);
 
 //        Activity activity = this.getActivity();
+//        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+//        toolbar.setTitle(forecastData.getCity().getName());
 //        CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
 //        if (appBarLayout != null) {
 //            appBarLayout.setTitle(forecastData.getCity().getName());
@@ -70,8 +69,8 @@ public class CityDetailFragment extends Fragment {
 
     private void setupViewPager() {
         ForecastViewPagerAdapter viewPagerAdapter = new ForecastViewPagerAdapter(getContext(), forecastData);
-//        viewPager.setClipChildren(false);
-        viewPager.setClipToPadding(false);
+        viewPager.setClipChildren(false);
+//        viewPager.setClipToPadding(false);
         viewPager.setPageMargin(getResources().getDimensionPixelOffset(R.dimen.text_margin));
 
 //        viewPager.setOffscreenPageLimit(3);

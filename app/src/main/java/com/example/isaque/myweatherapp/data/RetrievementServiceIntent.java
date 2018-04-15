@@ -15,6 +15,7 @@ import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
+import static com.example.isaque.myweatherapp.utils.Constants.LAST_CITY;
 import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR_LOAD_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.RESULT_FAIL;
@@ -30,15 +31,18 @@ public class RetrievementServiceIntent extends IntentService {
     ResultReceiver resultReceiver;
     String action;
     int cityId;
+    boolean lastCity;
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         resultReceiver = (ResultReceiver) intent.getExtras().get(Constants.RESULT_RECEIVER);
         action = intent.getAction();
         cityId = intent.getIntExtra(Constants.CITY_ID, -1);
+        lastCity = intent.getBooleanExtra(LAST_CITY, false);
 
         final ApiCall api = new ApiCall();
         final Bundle bundle = new Bundle();
+        bundle.putBoolean(LAST_CITY, lastCity);
         WeatherData weatherData;
         ForecastData forecastData;
         SharedPrefs prefs = new SharedPrefs(this);
