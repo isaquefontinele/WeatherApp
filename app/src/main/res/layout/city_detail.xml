@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.CityDetailFragment">
 
 
@@ -12,22 +13,111 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/semitransparent"
-        android:padding="16dp"
+        android:padding="5dp"
         android:text="Forecast for the next days:"
         android:textAlignment="center"
         android:textColor="@color/cardview_dark_background"
-        android:textIsSelectable="true"
-        android:textStyle="bold" />
+        android:textIsSelectable="true" />
+
+    <TextView
+        android:id="@+id/week_day_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="TextView" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager_forecast"
+        android:id="@+id/view_pager_day_1"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_below="@+id/city_detail"
-        android:layout_margin="16dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:clipChildren="true"
         android:clipToPadding="false"
         android:gravity="center"
         tools:listitem="@layout/city_list_content" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/week_day_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="TextView" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_day_2"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:gravity="center"
+        tools:listitem="@layout/city_list_content" />
+
+    <TextView
+        android:id="@+id/week_day_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="TextView" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_day_3"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:gravity="center"
+        tools:listitem="@layout/city_list_content" />
+
+    <TextView
+        android:id="@+id/week_day_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="TextView" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_day_4"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:gravity="center"
+        tools:listitem="@layout/city_list_content" />
+
+    <TextView
+        android:id="@+id/week_day_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="TextView" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_day_5"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:clipChildren="true"
+        android:clipToPadding="false"
+        android:gravity="center"
+        tools:listitem="@layout/city_list_content" />
+
+</LinearLayout>

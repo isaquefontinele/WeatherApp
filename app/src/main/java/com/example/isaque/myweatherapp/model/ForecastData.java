@@ -40,6 +40,10 @@ public class ForecastData implements Serializable {
         return list;
     }
 
+    public void setList(List<WeatherData> list) {
+        this.list = list;
+    }
+
     public City getCity() {
         return city;
     }

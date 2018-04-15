@@ -30,7 +30,7 @@ public class Utils {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    public static String getFormattedTemp(Context context, WeatherData weatherData) {
+    public static String getFormattedMinMaxTemp(Context context, WeatherData weatherData) {
         final String minTemp = String.valueOf(weatherData.getMain().getTemp_min());
         final String maxTemp = String.valueOf(weatherData.getMain().getTemp_max());
         SharedPrefs prefs = new SharedPrefs(context);
@@ -40,7 +40,17 @@ public class Utils {
         } else {
             return minTemp + "ºF / " + maxTemp + "ºF";
         }
+    }
 
+    public static String getFormattedTemp(Context context, WeatherData weatherData) {
+        final String temp = String.valueOf(weatherData.getMain().getTemp());
+        SharedPrefs prefs = new SharedPrefs(context);
+
+        if (prefs.getDefaultUnit().equals(Constants.METRIC)) {
+            return temp + "ºC";
+        } else {
+            return temp + "ºF";
+        }
     }
 
     public static String getFormattedWind(Context context, WeatherData.Wind wind) {
@@ -68,9 +78,15 @@ public class Utils {
     }
 
     public static String getDayOfWeek(Date date) {
-        SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE - dd/MM");
         return sdf1.format(date);
     }
+
+    public static String getHour(Date date) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm aa");
+        return sdf1.format(date);
+    }
+
 
     public static double round(double value, int places) {
         BigDecimal bd = new BigDecimal(value);

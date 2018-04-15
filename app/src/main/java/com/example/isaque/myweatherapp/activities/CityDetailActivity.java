@@ -66,6 +66,7 @@ public class CityDetailActivity extends BaseActivity {
         intent.putExtra(CITY_ID, getIntent().getIntExtra(Constants.CITY_ID, -1));
         intent.putExtra(RESULT_RECEIVER, mReceiver);
         startService(intent);
+        showLoading();
     }
 
     private void setupFragment(){
@@ -98,7 +99,7 @@ public class CityDetailActivity extends BaseActivity {
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
+            hideLoading();
             try {
                 if (resultCode == Constants.RESULT_OK) {
                     if (mReceiver != null ) {

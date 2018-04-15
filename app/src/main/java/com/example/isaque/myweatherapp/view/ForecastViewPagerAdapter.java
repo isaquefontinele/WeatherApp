@@ -16,11 +16,22 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ForecastViewPagerAdapter extends PagerAdapter {
 
-    List<WeatherData> weatherDataList;
-    ForecastData forecastData;
-    Context context;
+    @BindView(R.id.date)
+    TextView hour;
+    @BindView(R.id.weather_status)
+    TextView weatherStatus;
+    @BindView(R.id.temperature)
+    TextView temperature;
+    @BindView(R.id.icon_weather)
+    ImageView iconWeather;
+    private List<WeatherData> weatherDataList;
+    private ForecastData forecastData;
+    private Context context;
 
     public ForecastViewPagerAdapter(Context context, ForecastData forecastData) {
         this.context = context;
@@ -30,34 +41,28 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
 
     @Override
     public float getPageWidth(int position) {
-        return 0.55f;
+        return 0.3f;
     }
 
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.forecast_content, null);
+        ButterKnife.bind(this, view);
 
         try {
-//            final TextView cityName = view.findViewById(R.id.city_name);
-            final TextView date = view.findViewById(R.id.date);
-            final TextView weatherStatus = view.findViewById(R.id.weather_status);
-            final TextView temperature = view.findViewById(R.id.temp_min_max);
-            final ImageView iconWeather = view.findViewById(R.id.icon_weather);
-
-            date.setText(Utils.getDayOfWeek(forecastData.getWeatherDataList().get(position).getDate()));
-//            cityName.setText(forecastData.getCity().getName());
+            hour.setText(Utils.getHour(forecastData.getWeatherDataList().get(position).getDate()));
             weatherStatus.setText(weatherDataList.get(position).getWeather().get(0).getMain());
             temperature.setText(Utils.getFormattedTemp(context, weatherDataList.get(position)));
             Picasso.with(context).
                     load(Utils.getIconLink(weatherDataList.get(position).getWeather().get(0).getIcon())).
                     into(iconWeather);
 
+            container.addView(view);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        container.addView(view);
         return view;
     }
 

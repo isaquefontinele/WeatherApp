@@ -174,7 +174,7 @@ public class CityListActivity extends BaseActivity {
             holder.humidity.setText(Utils.getFormattedHumidity(mCities.get(position).getMain().getHumidity()));
             holder.wind.setText(Utils.getFormattedWind(mParentActivity, mCities.get(position).getWind()));
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
-            holder.temp_min_max.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
+            holder.temp_min_max.setText(Utils.getFormattedMinMaxTemp(mParentActivity, mCities.get(position)));
             Picasso.with(mParentActivity).
                     load(Utils.getIconLink(mCities.get(position).getWeather().get(0).getIcon())).
                     into(holder.iconWeather);
