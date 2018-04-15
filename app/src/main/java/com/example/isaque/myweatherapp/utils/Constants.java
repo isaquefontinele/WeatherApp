@@ -4,8 +4,10 @@ public class Constants {
 
     public static final String ACTION_FLAG = "actionFlag";
     public static final String ACTION_WEATHER_BY_ID = "weatherById";
+    public static final String ACTION_WEATHER_BY_NAME = "weatherByName";
     public static final String ACTION_5_DAY_FORECAST = "5dayForecast";
     public static final String CITY_ID = "cityId";
+    public static final String CITY_NAME = "cityName";
     public static final String LAST_CITY = "lastCity";
     public static final String FORECAST_DATA = "forecastData";
 
@@ -16,6 +18,7 @@ public class Constants {
     public static final String NETWORK_CONNECTION_ERROR = "networkError";
     public static final String NETWORK_CONNECTION_ERROR_LOAD_DATA = "networkErrorLoadData";
     public static final String ERROR_GETTING_DATA = "getDataError";
+    public static final String ERROR_CITY_NOT_FOUND = "cityNotFound";
     public static final String ERROR_UNKNOWN = "unknownError";
 
     public static final String METRIC = "metric";

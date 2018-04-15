@@ -76,9 +76,10 @@ public class CityListActivity extends BaseActivity {
     private void loadCities() {
         if (Utils.isConnected(this)) {
             mCitiesList.clear();
-            int[] registeredCities = {707860, 519188, 1283240, 614371, 2922336};
-            for (int i : registeredCities) {
-                if (i == registeredCities[registeredCities.length - 1]) {
+
+            List<Integer> registeredCities = prefs.getCurrentCitiesIdList();
+            for (Integer i : registeredCities) {
+                if (i == registeredCities.get(registeredCities.size() - 1)) {
                     setupServiceWeatherById(i, true);
                 } else {
                     setupServiceWeatherById(i, false);
@@ -236,7 +237,6 @@ public class CityListActivity extends BaseActivity {
     }
 
     public class ResultReceiverCallBack<T> extends ResultReceiver {
-
         public ResultReceiverCallBack(Handler handler) {
             super(handler);
         }

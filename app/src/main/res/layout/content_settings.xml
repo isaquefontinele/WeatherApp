@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.SettingsActivity"
     tools:showIn="@layout/activity_settings">
 
-    <RadioButton
-        android:id="@+id/radio_celsius"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:paddingTop="16dp"
+        android:text="@string/title_temp_unit"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="87dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <RadioButton
+        android:id="@+id/radio_metric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="5dp"
@@ -23,10 +35,9 @@
         tools:layout_editor_absoluteY="41dp" />
 
     <RadioButton
-        android:id="@+id/radio_fahr"
+        android:id="@+id/radio_imperial"
         android:layout_width="match_parent"
         android:layout_height="29dp"
-        android:layout_below="@+id/radio_celsius"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:text="@string/radio_imperial"
@@ -36,15 +47,58 @@
         tools:layout_editor_absoluteY="73dp" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:paddingTop="16dp"
-        android:text="@string/title_temp_unit"
+        android:text="Adicione novas cidades"
+        android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="87dp"
         tools:layout_editor_absoluteY="16dp" />
-</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/search_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:orientation="horizontal">
+
+        <SearchView
+            android:id="@+id/search_cities_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@android:color/white"
+            android:queryHint="Search for new cities" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/result_line"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/light_gray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/search_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingStart="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            tools:text="TextView" />
+
+        <ImageButton
+            android:id="@+id/bt_add_city"
+            style="@android:style/Widget.Holo.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </LinearLayout>
+</LinearLayout>

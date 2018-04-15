@@ -9,6 +9,7 @@ import com.example.isaque.myweatherapp.utils.Constants;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SharedPrefs {
 
@@ -37,6 +38,31 @@ public class SharedPrefs {
         String json = gson.toJson(weatherData);
         editor.putString(Constants.PREFS_CITIES_LIST, json);
         editor.apply();
+    }
+
+    public void addNewCity(WeatherData newCity) {
+        WeatherDataList weatherDataList = getCitiesList();
+        weatherDataList.getWeatherDataList().add(newCity);
+        saveCitiesList(weatherDataList);
+    }
+
+    public void removeCity(WeatherData oldCity) {
+        WeatherDataList weatherDataList = getCitiesList();
+        for (WeatherData weatherData : weatherDataList.getWeatherDataList()) {
+            if (weatherData.getId() == oldCity.getId()) {
+                weatherDataList.getWeatherDataList().remove(oldCity);
+            }
+        }
+        saveCitiesList(weatherDataList);
+    }
+
+    public List<Integer> getCurrentCitiesIdList() {
+        List<Integer> ids = new ArrayList<>();
+        WeatherDataList weatherDataList = getCitiesList();
+        for (WeatherData weatherData : weatherDataList.getWeatherDataList()) {
+            ids.add(weatherData.getId());
+        }
+        return ids;
     }
 
     public WeatherDataList getCitiesList() {

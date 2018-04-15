@@ -13,7 +13,10 @@ import com.example.isaque.myweatherapp.utils.Constants;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_5_DAY_FORECAST;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_NAME;
+import static com.example.isaque.myweatherapp.utils.Constants.CITY_NAME;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR_CITY_NOT_FOUND;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_GETTING_DATA;
 import static com.example.isaque.myweatherapp.utils.Constants.LAST_CITY;
 import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION_ERROR;
@@ -32,6 +35,7 @@ public class RetrievementServiceIntent extends IntentService {
     String action;
     int cityId;
     boolean lastCity;
+    String cityName;
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
@@ -39,6 +43,7 @@ public class RetrievementServiceIntent extends IntentService {
         action = intent.getAction();
         cityId = intent.getIntExtra(Constants.CITY_ID, -1);
         lastCity = intent.getBooleanExtra(LAST_CITY, false);
+        cityName = intent.getStringExtra(CITY_NAME);
 
         final ApiCall api = new ApiCall();
         final Bundle bundle = new Bundle();
@@ -71,6 +76,17 @@ public class RetrievementServiceIntent extends IntentService {
                     bundle.putSerializable(ACTION_5_DAY_FORECAST, forecastData);
                     bundle.putString(ACTION_FLAG, ACTION_5_DAY_FORECAST);
                     resultReceiver.send(RESULT_OK, bundle);
+                    break;
+                case ACTION_WEATHER_BY_NAME:
+                    weatherData = api.getWeatherByName(cityName);
+                    if (weatherData == null) {
+                        bundle.putString(ERROR, ERROR_CITY_NOT_FOUND);
+                        resultReceiver.send(RESULT_FAIL, bundle);
+                    } else {
+                        bundle.putSerializable(ACTION_WEATHER_BY_NAME, weatherData);
+                        bundle.putString(ACTION_FLAG, ACTION_WEATHER_BY_NAME);
+                        resultReceiver.send(RESULT_OK, bundle);
+                    }
                     break;
                 default:
                     bundle.putString(ERROR, ERROR_GETTING_DATA);

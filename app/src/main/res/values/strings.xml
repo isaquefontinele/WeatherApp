@@ -11,11 +11,16 @@
     <string name="error_getting_data">Erro carregando os dados do servidor. Por favor tente novamente mais tarde.</string>
     <string name="unknown_error">Um erro desconhecido ocorreu.</string>
     <string name="title_activity_settings">Configurações</string>
+    <string name="no_city_found">Nenhuma cidade encontrada</string>
 
     <!-->Error messages<-->
     <string name="title_temp_unit">Unidades padrão:</string>
     <string name="radio_metric">Métrico</string>
     <string name="radio_imperial">Imperial</string>
+
+    <!-->Settings<-->
+    <string name="new_city_added">New city added!</string>
+    <string name="city_already_added">City already added.</string>
 
     <!-->Other<-->
     <string name="of">\ de \</string>

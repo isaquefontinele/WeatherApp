@@ -21,8 +21,13 @@ public interface ServiceApi {
                                      @Query("appid") String appid,
                                      @Query("units") String units);
 
+    @GET(WEATHER_URL)
+    Call<WeatherData> getWeatherByName(@Query("q") String name,
+                                       @Query("appid") String appid);
+
     @GET(FORECAST_URL)
     Call<ForecastData> get5dayForecastById(@Query("id") String id,
                                            @Query("appid") String appid,
                                            @Query("units") String units);
+
 }

@@ -103,6 +103,10 @@ public class WeatherData implements Serializable {
         private String country;
         private String sunrise;
         private String sunset;
+
+        public String getCountry() {
+            return country;
+        }
     }
 
 

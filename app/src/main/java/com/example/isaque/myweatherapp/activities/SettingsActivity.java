@@ -3,32 +3,122 @@ package com.example.isaque.myweatherapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.isaque.myweatherapp.R;
+import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
 import com.example.isaque.myweatherapp.data.SharedPrefs;
+import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class SettingsActivity extends AppCompatActivity {
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_NAME;
+import static com.example.isaque.myweatherapp.utils.Constants.CITY_NAME;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR_CITY_NOT_FOUND;
+import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
+import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
-    RadioButton radioCelsius;
-    RadioButton radioFahr;
+public class SettingsActivity extends BaseActivity {
+
+    @BindView(R.id.radio_metric)
+    RadioButton radioMetric;
+    @BindView(R.id.radio_imperial)
+    RadioButton radioImperial;
+    @BindView(R.id.search_cities_bar)
+    SearchView searchView;
+    @BindView(R.id.search_result)
+    TextView searchResult;
+    @BindView(R.id.bt_add_city)
+    ImageButton buttomAddCity;
+    @BindView(R.id.result_line)
+    LinearLayout resultLine;
+    private ResultReceiverCallBack mReceiver;
+    private WeatherData searchedCity;
+    private List<WeatherData> currentCities;
+    private SharedPrefs prefs;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        mContext = this;
+        ButterKnife.bind(this, this);
+
+        prefs = new SharedPrefs(this);
+        setupToolbar();
+        setupRadioButtons();
+        setupSearchView();
+    }
+
+    private void setupSearchView() {
+        buttomAddCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (searchedCity != null) {
+                    addNewCity();
+                }
+            }
+        });
+
+        searchView.setIconified(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query.isEmpty()) {
+                    resultLine.setVisibility(View.INVISIBLE);
+                } else {
+                    resultLine.setVisibility(View.VISIBLE);
+                    searchCityByName(query);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void addNewCity() {
+        if (prefs.getCurrentCitiesIdList().contains(searchedCity.getId())) {
+            Toast.makeText(mContext, getString(R.string.city_already_added), Toast.LENGTH_SHORT).show();
+        } else {
+            prefs.addNewCity(searchedCity);
+            Toast.makeText(mContext, getString(R.string.new_city_added), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void searchCityByName(String query) {
+        mReceiver = new ResultReceiverCallBack(new Handler());
+        Intent intent = new Intent(this, RetrievementServiceIntent.class);
+        intent.setAction(ACTION_WEATHER_BY_NAME);
+        intent.putExtra(CITY_NAME, query);
+        intent.putExtra(RESULT_RECEIVER, mReceiver);
+        startService(intent);
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,31 +126,27 @@ public class SettingsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        radioCelsius = findViewById(R.id.radio_celsius);
-        radioFahr = findViewById(R.id.radio_fahr);
-        setupRadioButtons();
     }
 
     private void setupRadioButtons() {
         final SharedPrefs prefs = new SharedPrefs(this);
         if (prefs.getDefaultUnit().equals(Constants.METRIC)) {
-            radioCelsius.setChecked(true);
+            radioMetric.setChecked(true);
         } else {
-            radioFahr.setChecked(true);
+            radioImperial.setChecked(true);
         }
 
-        radioCelsius.setOnClickListener(new View.OnClickListener() {
+        radioMetric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                radioFahr.setChecked(false);
+                radioImperial.setChecked(false);
                 prefs.saveDefaultMetric();
             }
         });
-        radioFahr.setOnClickListener(new View.OnClickListener() {
+        radioImperial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                radioCelsius.setChecked(false);
+                radioMetric.setChecked(false);
                 prefs.saveDefaultImperial();
             }
         });
@@ -79,5 +165,39 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         NavUtils.navigateUpTo(this, new Intent(this, CityListActivity.class));
+    }
+
+    public class ResultReceiverCallBack<T> extends ResultReceiver {
+        public ResultReceiverCallBack(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            try {
+                if (resultCode == Constants.RESULT_OK) {
+                    if (mReceiver != null) {
+                        switch (resultData.getString(ACTION_FLAG)) {
+                            case ACTION_WEATHER_BY_NAME:
+                                searchedCity = (WeatherData) resultData.getSerializable(ACTION_WEATHER_BY_NAME);
+                                searchResult.setText(String.format("%s, %s", searchedCity.getName(), searchedCity.getSys().getCountry()));
+                                buttomAddCity.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                    }
+                } else {
+                    if (resultData.getString(ERROR).equals(ERROR_CITY_NOT_FOUND)) {
+                        searchResult.setText(getString(R.string.no_city_found));
+                        buttomAddCity.setVisibility(View.GONE);
+                        searchedCity = null;
+                    } else {
+                        showError(resultData.getString(ERROR));
+                    }
+                }
+            } catch (Exception e) {
+                showError(ERROR_UNKNOWN);
+                e.printStackTrace();
+            }
+        }
     }
 }
