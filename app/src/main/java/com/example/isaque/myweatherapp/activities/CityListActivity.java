@@ -2,7 +2,6 @@ package com.example.isaque.myweatherapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -27,9 +26,7 @@ import com.example.isaque.myweatherapp.utils.Utils;
 import com.example.isaque.myweatherapp.view.CityDetailFragment;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -166,10 +163,12 @@ public class CityListActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.date.setText(mCities.get(position).getDt().toString());
+            holder.date.setText(Utils.getFormattedDate(mParentActivity, mCities.get(position).getDate()));
             holder.cityName.setText(mCities.get(position).getName());
+            holder.humidity.setText(Utils.getFormattedHumidity(mCities.get(position).getMain().getHumidity()));
+            holder.wind.setText(Utils.getFormattedWind(mParentActivity, mCities.get(position).getWind()));
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
-            holder.temperature.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
+            holder.temp_min_max.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
             Picasso.with(mParentActivity).
                     load(Utils.getIconLink(mCities.get(position).getWeather().get(0).getIcon())).
                     into(holder.iconWeather);
@@ -207,17 +206,21 @@ public class CityListActivity extends BaseActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView cityName;
+            final TextView humidity;
+            final TextView wind;
             final TextView weatherStatus;
-            final TextView temperature;
+            final TextView temp_min_max;
             final TextView date;
             final ImageView iconWeather;
 
             ViewHolder(View view) {
                 super(view);
                 cityName = view.findViewById(R.id.city_name);
+                humidity = view.findViewById(R.id.humidity_value);
+                wind = view.findViewById(R.id.wind_value);
                 date = view.findViewById(R.id.date);
                 weatherStatus = view.findViewById(R.id.weather_status);
-                temperature = view.findViewById(R.id.temperature);
+                temp_min_max = view.findViewById(R.id.temp_min_max);
                 iconWeather = view.findViewById(R.id.icon_weather);
             }
         }

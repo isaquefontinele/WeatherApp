@@ -19,8 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_sort_by_alpha_black_48px" />
-                            <entry key="sourceFile" value="D:\Downloads\ic_sort_by_alpha_black_48px.svg" />
+                            <entry key="height" value="32" />
+                            <entry key="outputName" value="ic_wind" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="D:\Downloads\ic_wind.svg" />
+                            <entry key="width" value="32" />
                           </map>
                         </option>
                       </PersistentState>

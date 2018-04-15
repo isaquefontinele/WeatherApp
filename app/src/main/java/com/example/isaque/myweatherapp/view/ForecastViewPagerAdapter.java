@@ -42,10 +42,10 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
             final TextView cityName = view.findViewById(R.id.city_name);
             final TextView date = view.findViewById(R.id.date);
             final TextView weatherStatus = view.findViewById(R.id.weather_status);
-            final TextView temperature = view.findViewById(R.id.temperature);
+            final TextView temperature = view.findViewById(R.id.temp_min_max);
             final ImageView iconWeather = view.findViewById(R.id.icon_weather);
 
-            date.setText(forecastData.getWeatherDataList().get(position).getDt().toString());
+            date.setText(Utils.getDayOfWeek(forecastData.getWeatherDataList().get(position).getDate()));
             cityName.setText(forecastData.getCity().getName());
             weatherStatus.setText(weatherDataList.get(position).getWeather().get(0).getMain());
             temperature.setText(Utils.getFormattedTemp(context, weatherDataList.get(position)));

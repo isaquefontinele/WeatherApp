@@ -10,13 +10,12 @@
 
     <RadioButton
         android:id="@+id/radio_celsius"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="5dp"
-        android:text="@string/radio_celsius"
-        android:textColor="@color/cardview_dark_background"
+        android:text="@string/radio_metric"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="16dp"
@@ -24,12 +23,11 @@
 
     <RadioButton
         android:id="@+id/radio_fahr"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="29dp"
         android:layout_below="@+id/radio_celsius"
         android:layout_marginLeft="16dp"
-        android:text="@string/radio_fahr"
-        android:textColor="@color/cardview_dark_background"
+        android:text="@string/radio_imperial"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="16dp"
@@ -43,9 +41,8 @@
         android:layout_centerHorizontal="true"
         android:paddingTop="16dp"
         android:text="@string/title_temp_unit"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="16dp"
-        tools:text="Default Temperature Unit:" />
+        tools:layout_editor_absoluteY="16dp" />
 </RelativeLayout>

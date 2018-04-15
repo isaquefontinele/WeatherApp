@@ -14,8 +14,11 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-->Error messages<-->
-    <string name="title_temp_unit">Default Temperature Unit:</string>
-    <string name="radio_celsius">Celsius</string>
-    <string name="radio_fahr">Fahrenheit</string>
+    <string name="title_temp_unit">Default Units:</string>
+    <string name="radio_metric">Metric</string>
+    <string name="radio_imperial">Imperial</string>
+
+    <string name="of">\ de \</string>
+
 
 </resources>

@@ -46,11 +46,11 @@ public class CityDetailFragment extends Fragment {
 
         forecastData = (ForecastData) getArguments().getSerializable(Constants.FORECAST_DATA);
 
-        Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-        if (appBarLayout != null) {
-            appBarLayout.setTitle(forecastData.getCity().getName());
-        }
+//        Activity activity = this.getActivity();
+//        CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+//        if (appBarLayout != null) {
+//            appBarLayout.setTitle(forecastData.getCity().getName());
+//        }
     }
 
 

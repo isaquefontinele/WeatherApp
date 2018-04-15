@@ -4,9 +4,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.isaque.myweatherapp.R;
 import com.example.isaque.myweatherapp.activities.CityListActivity;
 import com.example.isaque.myweatherapp.data.SharedPrefs;
 import com.example.isaque.myweatherapp.model.WeatherData;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.example.isaque.myweatherapp.data.ServiceApi.BASE_URL_IMAGES;
 
@@ -36,4 +42,40 @@ public class Utils {
         }
 
     }
+
+    public static String getFormattedWind(Context context, WeatherData.Wind wind) {
+        final String speed = String.valueOf(round(wind.getSpeed(), 2));
+        final String deg = String.valueOf(round(wind.getDeg(), 2));
+        SharedPrefs prefs = new SharedPrefs(context);
+
+        if (prefs.getDefaultUnit().equals(Constants.METRIC)) {
+            return speed + "m/s - " + deg + "º";
+        } else {
+            return speed + "mph - " + deg + "º";
+        }
+    }
+
+    public static String getFormattedHumidity(int humidity) {
+        return String.valueOf(humidity) + "%";
+
+    }
+
+    public static String getFormattedDate(Context context, Date date) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE - dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("MMMM");
+        SimpleDateFormat sdf3 = new SimpleDateFormat("hh:mm aa");
+        return sdf1.format(date) + context.getString(R.string.of) + sdf2.format(date) + " - " + sdf3.format(date);
+    }
+
+    public static String getDayOfWeek(Date date) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE");
+        return sdf1.format(date);
+    }
+
+    public static double round(double value, int places) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
 }

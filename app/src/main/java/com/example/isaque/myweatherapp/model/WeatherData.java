@@ -2,6 +2,8 @@ package com.example.isaque.myweatherapp.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -63,11 +65,31 @@ public class WeatherData implements Serializable {
         public double getTemp_max() {
             return temp_max;
         }
+
+        public double getTemp() {
+            return temp;
+        }
+
+        public double getPressure() {
+            return pressure;
+        }
+
+        public int getHumidity() {
+            return humidity;
+        }
     }
 
     public class Wind{
         private double speed;
         private double deg;
+
+        public double getSpeed() {
+            return speed;
+        }
+
+        public double getDeg() {
+            return deg;
+        }
     }
 
     public class Clouds{
@@ -113,11 +135,10 @@ public class WeatherData implements Serializable {
         return clouds;
     }
 
-    public Date getDt() {
-        Timestamp timestamp = new Timestamp(dt);
-        Date date = new Date(timestamp.getDate());
+    public Date getDate() {
+        Date date = new Date();
+        date.setTime((long) dt * 1000);
         return date;
-
     }
 
     public Sys getSys() {
