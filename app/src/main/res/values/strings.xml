@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MyWeatherApp</string>
-    <string name="title_city_detail">City Detail</string>
 
     <!-->Loading Dialog<-->
     <string name="loading">Carregando</string>
@@ -11,14 +10,16 @@
     <string name="network_loaded_data">Não há conexão à internet. Os dados exibidos podem estar desatualizados.</string>
     <string name="error_getting_data">Erro carregando os dados do servidor. Por favor tente novamente mais tarde.</string>
     <string name="unknown_error">Um erro desconhecido ocorreu.</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">Configurações</string>
 
     <!-->Error messages<-->
-    <string name="title_temp_unit">Default Units:</string>
-    <string name="radio_metric">Metric</string>
+    <string name="title_temp_unit">Unidades padrão:</string>
+    <string name="radio_metric">Métrico</string>
     <string name="radio_imperial">Imperial</string>
 
+    <!-->Other<-->
     <string name="of">\ de \</string>
+    <string name="forecast_next_days">Previsão para os próximos dias:</string>
 
 
 </resources>

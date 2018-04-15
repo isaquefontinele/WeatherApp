@@ -65,8 +65,8 @@ public class Utils {
         }
     }
 
-    public static String getFormattedHumidity(int humidity) {
-        return String.valueOf(humidity) + "%";
+    public static String getFormattedHumidity(WeatherData weatherData) {
+        return String.valueOf(weatherData.getMain().getHumidity()) + "%";
 
     }
 

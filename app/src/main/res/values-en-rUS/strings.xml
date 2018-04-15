@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyWeatherApp</string>
+    <string name="loading">Loading...</string>
+    <string name="wait_while_loading">Please wait while the data is loading...</string>
+    <string name="network_error">There is no internet connection. Please try again later.</string>
+    <string name="network_loaded_data">There is no internet connection. The data displayed may be outdated.</string>
+    <string name="error_getting_data">Error loading server data. Please try again later.</string>
+    <string name="unknown_error">"An unknown error has occurred. "</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_temp_unit">Default Units:</string>
+    <string name="of">\ of \</string>
+    <string name="forecast_next_days">Forecast for the next days:</string>
+    <string name="radio_metric">Metric</string>
+    <string name="radio_imperial">Imperial</string>
+</resources>

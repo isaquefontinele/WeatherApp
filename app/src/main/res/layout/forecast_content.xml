@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
-                android:text="TextView"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:text="12:00 AM" />
 
             <TextView
                 android:id="@+id/weather_status"

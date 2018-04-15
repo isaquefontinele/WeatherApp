@@ -171,7 +171,8 @@ public class CityListActivity extends BaseActivity {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.date.setText(Utils.getFormattedDate(mParentActivity, mCities.get(position).getDate()));
             holder.cityName.setText(mCities.get(position).getName());
-            holder.humidity.setText(Utils.getFormattedHumidity(mCities.get(position).getMain().getHumidity()));
+            holder.humidity.setText(Utils.getFormattedHumidity(mCities.get(position)));
+            holder.temperature.setText(Utils.getFormattedTemp(mParentActivity, mCities.get(position)));
             holder.wind.setText(Utils.getFormattedWind(mParentActivity, mCities.get(position).getWind()));
             holder.weatherStatus.setText(mCities.get(position).getWeather().get(0).getMain());
             holder.temp_min_max.setText(Utils.getFormattedMinMaxTemp(mParentActivity, mCities.get(position)));
@@ -213,6 +214,7 @@ public class CityListActivity extends BaseActivity {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView cityName;
             final TextView humidity;
+            final TextView temperature;
             final TextView wind;
             final TextView weatherStatus;
             final TextView temp_min_max;
@@ -223,6 +225,7 @@ public class CityListActivity extends BaseActivity {
                 super(view);
                 cityName = view.findViewById(R.id.city_name);
                 humidity = view.findViewById(R.id.humidity_value);
+                temperature = view.findViewById(R.id.temperature_value);
                 wind = view.findViewById(R.id.wind_value);
                 date = view.findViewById(R.id.date);
                 weatherStatus = view.findViewById(R.id.weather_status);
