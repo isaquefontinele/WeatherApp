@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyWeatherApp</string>
+    <string name="app_name">Weather Now</string>
     <string name="loading">"Cargando..."</string>
     <string name="wait_while_loading">Espere mientras se cargan los datos ...</string>
     <string name="network_error">No hay conexión a internet Por favor, inténtelo de nuevo más tarde.</string>
@@ -18,8 +18,11 @@
     <string name="city_already_added">Ciudad ya agregada.</string>
     <string name="title_add_new_cities">Añadir nuevas ciudades</string>
     <string name="city_removed">¡Ciudad removida!</string>
-    <string name="min_temp">Min</string>
-    <string name="max_temp">Max</string>
+    <string name="min_temp">Temp Min</string>
+    <string name="max_temp">Temp Max</string>
     <string name="city_name">"Nombre de la ciudad "</string>
     <string name="filters">Filtros</string>
+    <string name="sort_by">Ordenar por:</string>
+    <string name="no_city_registered">Ninguna ciudad registrada.</string>
+    <string name="search_hint">Buscar nuevas ciudades</string>
 </resources>

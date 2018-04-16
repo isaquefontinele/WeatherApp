@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyWeatherApp</string>
+    <string name="app_name">Weather Now</string>
     <string name="title_activity_settings">Configurações</string>
 
     <!-->Loading Dialog<-->
@@ -12,20 +12,20 @@
     <string name="error_getting_data">Erro carregando os dados do servidor. Por favor tente novamente mais tarde.</string>
     <string name="unknown_error">Um erro desconhecido ocorreu.</string>
     <string name="no_city_found">Nenhuma cidade encontrada</string>
+    <string name="no_city_registered">Nenhuma cidade cadastrada.</string>
 
-    <!-->Error messages<-->
+
+    <!-->Settings<-->
     <string name="title_temp_unit">Unidades padrão:</string>
     <string name="radio_metric">Métrico</string>
     <string name="radio_imperial">Imperial</string>
-
-    <!-->Settings<-->
     <string name="new_city_added">New city added!</string>
     <string name="city_already_added">City already added.</string>
     <string name="title_add_new_cities">Adicione novas cidades</string>
     <string name="city_removed">Cidade removida!</string>
+    <string name="search_hint">Procure por novas cidades</string>
 
     <!-->Menu<-->
-
     <string name="filters">Filtros</string>
     <string name="sort_by">Ordenar por:</string>
     <string name="city_name">Nome da cidade</string>

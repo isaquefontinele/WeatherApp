@@ -40,6 +40,13 @@ public class SharedPrefs {
         editor.apply();
     }
 
+    public void clearPreferences(){
+        WeatherDataList weatherDataList = getCitiesList();
+        weatherDataList.setWeatherDataList(new ArrayList<WeatherData>());
+        saveCitiesList(weatherDataList);
+        saveDefaultMetric();
+    }
+
     public void addNewCity(WeatherData newCity) {
         WeatherDataList weatherDataList = getCitiesList();
         weatherDataList.getWeatherDataList().add(newCity);

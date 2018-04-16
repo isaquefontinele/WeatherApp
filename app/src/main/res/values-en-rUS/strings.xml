@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyWeatherApp</string>
+    <string name="app_name">Weather Now</string>
     <string name="loading">Loading...</string>
     <string name="wait_while_loading">Please wait while the data is loading...</string>
     <string name="network_error">There is no internet connection. Please try again later.</string>
@@ -20,6 +20,9 @@
     <string name="city_removed">City removed!</string>
     <string name="city_name">City Name</string>
     <string name="filters">Filters</string>
-    <string name="min_temp">Min</string>
-    <string name="max_temp">Max</string>
+    <string name="min_temp">Min Temp</string>
+    <string name="max_temp">Max Temp</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="no_city_registered">No cities registered.</string>
+    <string name="search_hint">Search for new cities</string>
 </resources>
