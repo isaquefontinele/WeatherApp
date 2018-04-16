@@ -29,8 +29,8 @@ public class ApiCall {
         return serviceApi.get5dayForecastById(cityName, API_KEY, unit).execute().body();
     }
 
-    public WeatherData getWeatherByName(String cityName) throws IOException {
-        return serviceApi.getWeatherByName(cityName, API_KEY).execute().body();
+    public WeatherData getWeatherByName(String cityName, String unit) throws IOException {
+        return serviceApi.getWeatherByName(cityName, API_KEY, unit).execute().body();
     }
 
 }

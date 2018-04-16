@@ -78,7 +78,7 @@ public class RetrievementServiceIntent extends IntentService {
                     resultReceiver.send(RESULT_OK, bundle);
                     break;
                 case ACTION_WEATHER_BY_NAME:
-                    weatherData = api.getWeatherByName(cityName);
+                    weatherData = api.getWeatherByName(cityName, defaultUnit);
                     if (weatherData == null) {
                         bundle.putString(ERROR, ERROR_CITY_NOT_FOUND);
                         resultReceiver.send(RESULT_FAIL, bundle);
