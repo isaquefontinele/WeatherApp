@@ -15,7 +15,7 @@ public class ApiCall {
 
     private ServiceApi serviceApi;
 
-    public ApiCall(){
+    ApiCall(){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(ServiceApi.BASE_URL).
                 addConverterFactory(GsonConverterFactory.create()).build();
         this.serviceApi = retrofit.create(ServiceApi.class);
@@ -25,8 +25,8 @@ public class ApiCall {
         return serviceApi.getWeatherById(String.valueOf(idCity), API_KEY, unit).execute().body();
     }
 
-    public ForecastData getForecastById(int idCity, String unit) throws IOException {
-        return serviceApi.get5dayForecastById(String.valueOf(idCity), API_KEY, unit).execute().body();
+    public ForecastData getForecastById(String cityName, String unit) throws IOException {
+        return serviceApi.get5dayForecastById(cityName, API_KEY, unit).execute().body();
     }
 
     public WeatherData getWeatherByName(String cityName) throws IOException {

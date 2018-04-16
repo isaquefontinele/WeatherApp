@@ -1,104 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.SettingsActivity"
     tools:showIn="@layout/activity_settings">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="@string/title_temp_unit"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <RadioButton
-        android:id="@+id/radio_metric"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/radio_metric"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="41dp" />
-
-    <RadioButton
-        android:id="@+id/radio_imperial"
-        android:layout_width="match_parent"
-        android:layout_height="29dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/radio_imperial"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="73dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="Adicione novas cidades"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="16dp" />
-
     <LinearLayout
-        android:id="@+id/search_line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_gray"
-        android:orientation="horizontal">
-
-        <SearchView
-            android:id="@+id/search_cities_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:background="@android:color/white"
-            android:queryHint="Search for new cities" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/result_line"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/light_gray"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/search_result"
-            android:layout_width="wrap_content"
+            android:id="@+id/title_units"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="16dp"
-            android:paddingStart="10dp"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            tools:text="TextView" />
+            android:paddingTop="16dp"
+            android:text="@string/title_temp_unit"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="16dp" />
 
-        <ImageButton
-            android:id="@+id/bt_add_city"
-            style="@android:style/Widget.Holo.ImageButton"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/radio_metric"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/radio_metric"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="41dp" />
+
+        <RadioButton
+            android:id="@+id/radio_imperial"
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/radio_imperial"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="73dp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text="@string/title_add_new_cities"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <LinearLayout
+            android:id="@+id/search_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_gray"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/search_cities_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@android:color/white"
+                android:queryHint="Search for new cities" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/result_line"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/light_gray"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/search_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:paddingStart="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp"
+                tools:text="TextView" />
+
+            <ImageButton
+                android:id="@+id/bt_add_city"
+                style="@android:style/Widget.Holo.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_input_add" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text="Current cities"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_current_cities"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="50dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/content_current_cities_list" />
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

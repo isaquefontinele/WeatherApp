@@ -14,4 +14,23 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/city_list_content" />
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/no_cities_registered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/semitransparent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Nenhuma cidade cadastrada."
+            android:textSize="24sp" />
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

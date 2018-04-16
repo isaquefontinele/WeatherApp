@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.isaque.myweatherapp.R;
-import com.example.isaque.myweatherapp.activities.CityDetailActivity;
-import com.example.isaque.myweatherapp.activities.CityListActivity;
 import com.example.isaque.myweatherapp.model.ForecastData;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
 import com.example.isaque.myweatherapp.utils.Utils;
+import com.example.isaque.myweatherapp.view.adapters.ForecastViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,36 +26,26 @@ import butterknife.ButterKnife;
 
 public class CityDetailFragment extends Fragment {
 
-    @BindView(R.id.view_pager_day_1)
-    ViewPager viewPager1;
-    @BindView(R.id.view_pager_day_2)
-    ViewPager viewPager2;
-    @BindView(R.id.view_pager_day_3)
-    ViewPager viewPager3;
-    @BindView(R.id.view_pager_day_4)
-    ViewPager viewPager4;
-    @BindView(R.id.view_pager_day_5)
-    ViewPager viewPager5;
-    @BindView(R.id.week_day_1)
-    TextView day1;
-    @BindView(R.id.week_day_2)
-    TextView day2;
-    @BindView(R.id.week_day_3)
-    TextView day3;
-    @BindView(R.id.week_day_4)
-    TextView day4;
-    @BindView(R.id.week_day_5)
-    TextView day5;
+    @BindView(R.id.view_pager_day_1) ViewPager viewPager1;
+    @BindView(R.id.view_pager_day_2) ViewPager viewPager2;
+    @BindView(R.id.view_pager_day_3) ViewPager viewPager3;
+    @BindView(R.id.view_pager_day_4) ViewPager viewPager4;
+    @BindView(R.id.view_pager_day_5) ViewPager viewPager5;
+    @BindView(R.id.week_day_1) TextView day1;
+    @BindView(R.id.week_day_2) TextView day2;
+    @BindView(R.id.week_day_3) TextView day3;
+    @BindView(R.id.week_day_4) TextView day4;
+    @BindView(R.id.week_day_5) TextView day5;
     private ForecastData forecastData;
     private Map<String, List<WeatherData>> weatherDataMap;
     private List<String> weekDays = new ArrayList<>();
 
-    public CityDetailFragment() {
-    }
+    public CityDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         forecastData = (ForecastData) getArguments().getSerializable(Constants.FORECAST_DATA);
         filterForecastByDay(forecastData.getWeatherDataList());
@@ -84,17 +73,13 @@ public class CityDetailFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.city_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-
         if (forecastData != null) {
-//            ((TextView) rootView.findViewById(R.id.city_detail)).setText(forecastData.getWeatherDataList().get(0).getWeather().get(0).getMain());
-
             setupViewPagers();
         }
         return rootView;
@@ -111,7 +96,6 @@ public class CityDetailFragment extends Fragment {
             titleDays[i].setText(weekDays.get(i));
             viewPagers[i].setPageMargin(getResources().getDimensionPixelOffset(R.dimen.view_pager_margin));
             viewPagers[i].setAdapter(new ForecastViewPagerAdapter(getContext(), forecastData));
-
         }
     }
 }

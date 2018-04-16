@@ -26,7 +26,7 @@ public interface ServiceApi {
                                        @Query("appid") String appid);
 
     @GET(FORECAST_URL)
-    Call<ForecastData> get5dayForecastById(@Query("id") String id,
+    Call<ForecastData> get5dayForecastById(@Query("q") String name,
                                            @Query("appid") String appid,
                                            @Query("units") String units);
 

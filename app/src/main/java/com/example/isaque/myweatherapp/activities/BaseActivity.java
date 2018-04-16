@@ -19,7 +19,7 @@ import static com.example.isaque.myweatherapp.utils.Constants.NETWORK_CONNECTION
 
 public class BaseActivity extends AppCompatActivity {
 
-    ProgressDialog progress;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +58,6 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 
     public Comparator<WeatherData> compareByName = new Comparator<WeatherData>() {
         @Override

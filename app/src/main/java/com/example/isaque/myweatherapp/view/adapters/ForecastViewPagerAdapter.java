@@ -1,4 +1,4 @@
-package com.example.isaque.myweatherapp.view;
+package com.example.isaque.myweatherapp.view.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -21,14 +21,10 @@ import butterknife.ButterKnife;
 
 public class ForecastViewPagerAdapter extends PagerAdapter {
 
-    @BindView(R.id.date)
-    TextView hour;
-    @BindView(R.id.weather_status)
-    TextView weatherStatus;
-    @BindView(R.id.temperature)
-    TextView temperature;
-    @BindView(R.id.icon_weather)
-    ImageView iconWeather;
+    @BindView(R.id.date) TextView hour;
+    @BindView(R.id.weather_status) TextView weatherStatus;
+    @BindView(R.id.temperature) TextView temperature;
+    @BindView(R.id.icon_weather) ImageView iconWeather;
     private List<WeatherData> weatherDataList;
     private ForecastData forecastData;
     private Context context;
@@ -41,7 +37,7 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
 
     @Override
     public float getPageWidth(int position) {
-        return 0.3f;
+        return 0.35f;
     }
 
 
@@ -62,7 +58,6 @@ public class ForecastViewPagerAdapter extends PagerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return view;
     }
 

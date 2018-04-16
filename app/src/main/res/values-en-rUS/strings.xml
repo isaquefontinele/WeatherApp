@@ -13,4 +13,13 @@
     <string name="forecast_next_days">Forecast for the next days:</string>
     <string name="radio_metric">Metric</string>
     <string name="radio_imperial">Imperial</string>
+    <string name="no_city_found">No city found</string>
+    <string name="new_city_added">New city added!</string>
+    <string name="city_already_added">City already added.</string>
+    <string name="title_add_new_cities">Add New Cities</string>
+    <string name="city_removed">City removed!</string>
+    <string name="city_name">City Name</string>
+    <string name="filters">Filters</string>
+    <string name="min_temp">Min</string>
+    <string name="max_temp">Max</string>
 </resources>

@@ -13,8 +13,8 @@ import java.util.List;
 
 public class SharedPrefs {
 
-    static SharedPreferences preferences;
-    static SharedPreferences.Editor editor;
+    private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
 
     public SharedPrefs(Context context) {
         preferences = context.getSharedPreferences(Constants.SHARE_PREFS, Context.MODE_PRIVATE);
@@ -48,11 +48,13 @@ public class SharedPrefs {
 
     public void removeCity(WeatherData oldCity) {
         WeatherDataList weatherDataList = getCitiesList();
+        List<WeatherData> result = new ArrayList<>();
         for (WeatherData weatherData : weatherDataList.getWeatherDataList()) {
-            if (weatherData.getId() == oldCity.getId()) {
-                weatherDataList.getWeatherDataList().remove(oldCity);
+            if (weatherData.getId() != oldCity.getId()) {
+                result.add(weatherData);
             }
         }
+        weatherDataList.setWeatherDataList(result);
         saveCitiesList(weatherDataList);
     }
 
@@ -63,6 +65,15 @@ public class SharedPrefs {
             ids.add(weatherData.getId());
         }
         return ids;
+    }
+
+    public List<String> getCurrentCitiesNameList() {
+        List<String> names = new ArrayList<>();
+        WeatherDataList weatherDataList = getCitiesList();
+        for (WeatherData weatherData : weatherDataList.getWeatherDataList()) {
+            names.add(weatherData.getName());
+        }
+        return names;
     }
 
     public WeatherDataList getCitiesList() {
@@ -79,7 +90,4 @@ public class SharedPrefs {
         return preferences;
     }
 
-    public SharedPreferences.Editor getEditor() {
-        return editor;
-    }
 }

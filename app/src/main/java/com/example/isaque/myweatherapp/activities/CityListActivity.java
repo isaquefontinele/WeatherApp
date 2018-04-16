@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -30,10 +31,13 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_NAME;
 import static com.example.isaque.myweatherapp.utils.Constants.CITY_ID;
+import static com.example.isaque.myweatherapp.utils.Constants.CITY_NAME;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR_UNKNOWN;
 import static com.example.isaque.myweatherapp.utils.Constants.LAST_CITY;
@@ -42,16 +46,18 @@ import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 public class CityListActivity extends BaseActivity {
 
     @BindView(R.id.city_list) RecyclerView recyclerView;
+    @BindView(R.id.no_cities_registered) CardView titleNoCities;
     private boolean mTwoPane;
     private ResultReceiverCallBack mReceiver;
     private List<WeatherData> mCitiesList;
-    private SimpleItemRecyclerViewAdapter mAdapter;
+    private WeatherRecyclerViewAdapter mAdapter;
     private SharedPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_list);
+        ButterKnife.bind(this, this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,32 +82,53 @@ public class CityListActivity extends BaseActivity {
     private void loadCities() {
         if (Utils.isConnected(this)) {
             mCitiesList.clear();
+//            List<Integer> registeredCities = prefs.getCurrentCitiesIdList();
+            List<String> names = prefs.getCurrentCitiesNameList();
 
-            List<Integer> registeredCities = prefs.getCurrentCitiesIdList();
-            for (Integer i : registeredCities) {
-                if (i == registeredCities.get(registeredCities.size() - 1)) {
-                    setupServiceWeatherById(i, true);
-                } else {
-                    setupServiceWeatherById(i, false);
+            if (names.size() == 0) {
+                titleNoCities.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+
+            } else {
+                showLoading();
+                titleNoCities.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                for (String name : names) {
+                    if (name.equals(names.get(names.size() - 1))) {
+//                        callServiceWeatherById(i, true);
+                        callServiceWeatherByName(name, true);
+                    } else {
+//                        callServiceWeatherById(i, false);
+                        callServiceWeatherByName(name, false);
+                    }
                 }
             }
         }
-        showLoading();
     }
 
     private void setupRecyclerView() {
         prefs = new SharedPrefs(this);
         mCitiesList = prefs.getCitiesList().getWeatherDataList();
         recyclerView = findViewById(R.id.city_list);
-        mAdapter = new SimpleItemRecyclerViewAdapter(this, mCitiesList, mTwoPane);
+        mAdapter = new WeatherRecyclerViewAdapter(this, mCitiesList, mTwoPane);
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void setupServiceWeatherById(int cityId, boolean lastCity) {
+    private void callServiceWeatherById(int cityId, boolean lastCity) {
         mReceiver = new ResultReceiverCallBack(new Handler());
         Intent intent = new Intent(this, RetrievementServiceIntent.class);
         intent.setAction(ACTION_WEATHER_BY_ID);
         intent.putExtra(CITY_ID, cityId);
+        intent.putExtra(LAST_CITY, lastCity);
+        intent.putExtra(RESULT_RECEIVER, mReceiver);
+        startService(intent);
+    }
+
+    private void callServiceWeatherByName(String cityName, boolean lastCity) {
+        mReceiver = new ResultReceiverCallBack(new Handler());
+        Intent intent = new Intent(this, RetrievementServiceIntent.class);
+        intent.setAction(ACTION_WEATHER_BY_NAME);
+        intent.putExtra(CITY_NAME, cityName);
         intent.putExtra(LAST_CITY, lastCity);
         intent.putExtra(RESULT_RECEIVER, mReceiver);
         startService(intent);
@@ -147,15 +174,15 @@ public class CityListActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public static class WeatherRecyclerViewAdapter
+            extends RecyclerView.Adapter<WeatherRecyclerViewAdapter.ViewHolder> {
 
         private final CityListActivity mParentActivity;
         private List<WeatherData> mCities;
         private final boolean mTwoPane;
 
-        SimpleItemRecyclerViewAdapter(CityListActivity parent, List<WeatherData> items,
-                                      boolean twoPane) {
+        WeatherRecyclerViewAdapter(CityListActivity parent, List<WeatherData> items,
+                                   boolean twoPane) {
             mCities = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
@@ -188,6 +215,7 @@ public class CityListActivity extends BaseActivity {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
                         arguments.putInt(CITY_ID, mCities.get(position).getId());
+                        arguments.putString(CITY_NAME, mCities.get(position).getName());
                         CityDetailFragment fragment = new CityDetailFragment();
                         fragment.setArguments(arguments);
                         mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -197,6 +225,7 @@ public class CityListActivity extends BaseActivity {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, CityDetailActivity.class);
                         intent.putExtra(CITY_ID, mCities.get(position).getId());
+                        intent.putExtra(CITY_NAME, mCities.get(position).getName());
                         context.startActivity(intent);
                     }
                 }
@@ -213,25 +242,18 @@ public class CityListActivity extends BaseActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView cityName;
-            final TextView humidity;
-            final TextView temperature;
-            final TextView wind;
-            final TextView weatherStatus;
-            final TextView temp_min_max;
-            final TextView date;
-            final ImageView iconWeather;
+            @BindView(R.id.temperature_value) TextView temperature;
+            @BindView(R.id.weather_status) TextView weatherStatus;
+            @BindView(R.id.temp_min_max) TextView temp_min_max;
+            @BindView(R.id.humidity_value) TextView humidity;
+            @BindView(R.id.city_name) TextView cityName;
+            @BindView(R.id.wind_value) TextView wind;
+            @BindView(R.id.date) TextView date;
+            @BindView(R.id.icon_weather) ImageView iconWeather;
 
             ViewHolder(View view) {
                 super(view);
-                cityName = view.findViewById(R.id.city_name);
-                humidity = view.findViewById(R.id.humidity_value);
-                temperature = view.findViewById(R.id.temperature_value);
-                wind = view.findViewById(R.id.wind_value);
-                date = view.findViewById(R.id.date);
-                weatherStatus = view.findViewById(R.id.weather_status);
-                temp_min_max = view.findViewById(R.id.temp_min_max);
-                iconWeather = view.findViewById(R.id.icon_weather);
+                ButterKnife.bind(this, view);
             }
         }
     }
@@ -254,6 +276,11 @@ public class CityListActivity extends BaseActivity {
                                 Collections.sort(mCitiesList, compareByName);
                                 updateAdapter();
                                 break;
+                            case ACTION_WEATHER_BY_NAME:
+                                mCitiesList.add(((WeatherData)
+                                        resultData.getSerializable(ACTION_WEATHER_BY_NAME)));
+                                Collections.sort(mCitiesList, compareByName);
+                                updateAdapter();
                         }
                     }
                 } else {

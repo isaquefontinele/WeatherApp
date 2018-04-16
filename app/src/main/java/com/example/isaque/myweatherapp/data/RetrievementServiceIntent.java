@@ -72,7 +72,7 @@ public class RetrievementServiceIntent extends IntentService {
                     resultReceiver.send(RESULT_OK, bundle);
                     break;
                 case ACTION_5_DAY_FORECAST:
-                    forecastData = api.getForecastById(cityId, defaultUnit);
+                    forecastData = api.getForecastById(cityName, defaultUnit);
                     bundle.putSerializable(ACTION_5_DAY_FORECAST, forecastData);
                     bundle.putString(ACTION_FLAG, ACTION_5_DAY_FORECAST);
                     resultReceiver.send(RESULT_OK, bundle);

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.isaque.myweatherapp.data.RetrievementServiceIntent;
 import com.example.isaque.myweatherapp.data.SharedPrefs;
 import com.example.isaque.myweatherapp.model.WeatherData;
 import com.example.isaque.myweatherapp.utils.Constants;
+import com.example.isaque.myweatherapp.view.adapters.CurrentCitiesRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -29,7 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_FLAG;
-import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_ID;
 import static com.example.isaque.myweatherapp.utils.Constants.ACTION_WEATHER_BY_NAME;
 import static com.example.isaque.myweatherapp.utils.Constants.CITY_NAME;
 import static com.example.isaque.myweatherapp.utils.Constants.ERROR;
@@ -39,23 +40,19 @@ import static com.example.isaque.myweatherapp.utils.Constants.RESULT_RECEIVER;
 
 public class SettingsActivity extends BaseActivity {
 
-    @BindView(R.id.radio_metric)
-    RadioButton radioMetric;
-    @BindView(R.id.radio_imperial)
-    RadioButton radioImperial;
-    @BindView(R.id.search_cities_bar)
-    SearchView searchView;
-    @BindView(R.id.search_result)
-    TextView searchResult;
-    @BindView(R.id.bt_add_city)
-    ImageButton buttomAddCity;
-    @BindView(R.id.result_line)
-    LinearLayout resultLine;
+    @BindView(R.id.radio_metric) RadioButton radioMetric;
+    @BindView(R.id.radio_imperial) RadioButton radioImperial;
+    @BindView(R.id.search_cities_bar) SearchView searchView;
+    @BindView(R.id.search_result) TextView searchResult;
+    @BindView(R.id.bt_add_city) ImageButton buttomAddCity;
+    @BindView(R.id.result_line) LinearLayout resultLine;
+    @BindView(R.id.recycler_current_cities) RecyclerView recyclerViewCurrentCities;
     private ResultReceiverCallBack mReceiver;
     private WeatherData searchedCity;
-    private List<WeatherData> currentCities;
     private SharedPrefs prefs;
     private Context mContext;
+    private List<WeatherData> mCitiesList;
+    private CurrentCitiesRecyclerViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,56 +63,9 @@ public class SettingsActivity extends BaseActivity {
 
         prefs = new SharedPrefs(this);
         setupToolbar();
-        setupRadioButtons();
         setupSearchView();
-    }
-
-    private void setupSearchView() {
-        buttomAddCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (searchedCity != null) {
-                    addNewCity();
-                }
-            }
-        });
-
-        searchView.setIconified(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                if (query.isEmpty()) {
-                    resultLine.setVisibility(View.INVISIBLE);
-                } else {
-                    resultLine.setVisibility(View.VISIBLE);
-                    searchCityByName(query);
-                }
-                return false;
-            }
-        });
-    }
-
-    private void addNewCity() {
-        if (prefs.getCurrentCitiesIdList().contains(searchedCity.getId())) {
-            Toast.makeText(mContext, getString(R.string.city_already_added), Toast.LENGTH_SHORT).show();
-        } else {
-            prefs.addNewCity(searchedCity);
-            Toast.makeText(mContext, getString(R.string.new_city_added), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void searchCityByName(String query) {
-        mReceiver = new ResultReceiverCallBack(new Handler());
-        Intent intent = new Intent(this, RetrievementServiceIntent.class);
-        intent.setAction(ACTION_WEATHER_BY_NAME);
-        intent.putExtra(CITY_NAME, query);
-        intent.putExtra(RESULT_RECEIVER, mReceiver);
-        startService(intent);
+        setupRecyclerView();
+        setupRadioButtons();
     }
 
     private void setupToolbar() {
@@ -130,6 +80,7 @@ public class SettingsActivity extends BaseActivity {
 
     private void setupRadioButtons() {
         final SharedPrefs prefs = new SharedPrefs(this);
+        recyclerViewCurrentCities.requestFocus();
         if (prefs.getDefaultUnit().equals(Constants.METRIC)) {
             radioMetric.setChecked(true);
         } else {
@@ -151,6 +102,66 @@ public class SettingsActivity extends BaseActivity {
             }
         });
     }
+
+    private void setupRecyclerView() {
+        prefs = new SharedPrefs(this);
+        mCitiesList = prefs.getCitiesList().getWeatherDataList();
+        mAdapter = new CurrentCitiesRecyclerViewAdapter(this, mCitiesList);
+        recyclerViewCurrentCities.setAdapter(mAdapter);
+    }
+
+    private void setupSearchView() {
+        buttomAddCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (searchedCity != null) {
+                    addNewCity();
+                }
+            }
+        });
+
+        searchView.setIconified(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                searchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query.isEmpty()) {
+                    resultLine.setVisibility(View.GONE);
+                } else {
+                    resultLine.setVisibility(View.VISIBLE);
+                    searchCityByName(query);
+                }
+                return false;
+            }
+        });
+        searchView.setFocusableInTouchMode(true);
+    }
+
+    private void addNewCity() {
+        if (prefs.getCurrentCitiesNameList().contains(searchedCity.getName())) {
+            Toast.makeText(mContext, getString(R.string.city_already_added), Toast.LENGTH_SHORT).show();
+        } else {
+            prefs.addNewCity(searchedCity);
+            Toast.makeText(mContext, getString(R.string.new_city_added), Toast.LENGTH_SHORT).show();
+            mAdapter.addCity(searchedCity);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void searchCityByName(String query) {
+        mReceiver = new ResultReceiverCallBack(new Handler());
+        Intent intent = new Intent(this, RetrievementServiceIntent.class);
+        intent.setAction(ACTION_WEATHER_BY_NAME);
+        intent.putExtra(CITY_NAME, query);
+        intent.putExtra(RESULT_RECEIVER, mReceiver);
+        startService(intent);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

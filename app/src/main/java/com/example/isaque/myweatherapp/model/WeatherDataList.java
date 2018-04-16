@@ -14,4 +14,8 @@ public class WeatherDataList implements Serializable {
     public List<WeatherData> getWeatherDataList() {
         return weatherDataList;
     }
+
+    public void setWeatherDataList(List<WeatherData> weatherDataList) {
+        this.weatherDataList = weatherDataList;
+    }
 }
